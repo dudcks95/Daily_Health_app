@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+             xmlns:tools = "http://schemas.android.com/tools"
+             android:id = "@+id/fragRun"
+             android:layout_width = "match_parent"
+             android:layout_height = "match_parent"
+             tools:context = ".ui.run.RunFragment">
+
+	<LinearLayout
+		android:id = "@+id/container"
+		android:layout_width = "wrap_content"
+		android:layout_height = "wrap_content"
+		android:orientation = "vertical">
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:layout_gravity = "bottom"
+		android:orientation = "horizontal">
+		<Button
+			android:id = "@+id/btnStartRecord"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:text = "기록 시작" />
+		<Button
+			android:id = "@+id/btnViewMap"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:text = "지도 보기" />
+	</LinearLayout>
+	
+</FrameLayout>
