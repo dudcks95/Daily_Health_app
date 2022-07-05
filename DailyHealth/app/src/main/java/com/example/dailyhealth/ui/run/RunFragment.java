@@ -27,12 +27,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class RunFragment extends Fragment {
 	
-	Fragment mapsFragment = null;
-	Fragment recordFragment = null;
+	Fragment mapsFragment;
+	Fragment recordFragment = new RecordFragment();
 	Button btnViewMap;
-	private GoogleMap mMap;
-	private UserFragment userFragment = new UserFragment();
-	
+	boolean flagBtnViewMap = false;
+	Fragment user = new UserFragment();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
@@ -44,24 +43,42 @@ public class RunFragment extends Fragment {
 		btnViewMap.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mapsFragment = new MapsFragment();
-				Log.d(">>", "click");
-				
-				// Open fragment
-				getActivity()
-						.getSupportFragmentManager()
-						.beginTransaction()
-						.replace(R.id.container, mapsFragment)
-						.commit();
+
+				if( flagBtnViewMap == true){
+
+					//새로운 map를 가져와야함 갱신된 내용을 필요로 함
+					mapsFragment = new MapsFragment();
+
+					// Replace fragment
+					getChildFragmentManager()
+							.beginTransaction()
+							.replace(R.id.container, mapsFragment)
+							// replace 다음에 적어준다.
+							// replace시 fragment를 destroy하지 않고 backstack에 담아둔다.
+							.addToBackStack(null)
+							.commit();
+				}else{
+					getChildFragmentManager()
+							.beginTransaction()
+							.replace(R.id.container, recordFragment)
+							.addToBackStack(null)
+							.commit();
+				}
+
+				flagBtnViewMap = !(flagBtnViewMap);
 			}
 		});
-		
+
 		// Inflate the layout for this fragment
-		
+
 		return fragmentRun;
 //		return inflater.inflate(R.layout.fragment_run, container, false);
-		
-		
+
+
 	}
 	
+	// findById 넣는 곳
+	private void intitView(){
+
+	}
 }

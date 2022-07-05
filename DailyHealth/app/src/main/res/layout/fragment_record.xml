@@ -3,8 +3,13 @@
              xmlns:tools = "http://schemas.android.com/tools"
              android:layout_width = "match_parent"
              android:layout_height = "match_parent"
+			 android:id="@+id/fragRecord"
              tools:context = ".ui.run.RecordFragment">
-
+<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	>
     <TextView
 	    android:layout_width = "match_parent"
 	    android:layout_height = "wrap_content"
@@ -34,5 +39,5 @@
 		android:layout_width = "match_parent"
 		android:layout_height = "wrap_content"
 		android:text = "[평균 속도]" />
-
+</LinearLayout>
 </FrameLayout>
