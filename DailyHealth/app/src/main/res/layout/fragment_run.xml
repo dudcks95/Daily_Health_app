@@ -10,25 +10,27 @@
 		android:id = "@+id/container"
 		android:layout_width = "wrap_content"
 		android:layout_height = "wrap_content"
-		android:name="com.example.dailyhealth.ui.run.RecordFragment"
 		android:orientation = "vertical">
 	</LinearLayout>
 	
-	<LinearLayout
+	<GridLayout
 		android:layout_width = "match_parent"
 		android:layout_height = "wrap_content"
 		android:layout_gravity = "bottom"
-		android:orientation = "horizontal">
+		android:columnCount = "3"
+		android:orientation = "horizontal"
+		android:rowCount = "1">
 		<Button
 			android:id = "@+id/btnStartRecord"
 			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
+			android:layout_column = "1"
 			android:text = "기록 시작" />
 		<Button
 			android:id = "@+id/btnViewMap"
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
+			android:layout_column = "2"
 			android:text = "지도 보기" />
-	</LinearLayout>
+	</GridLayout>
 	
 </FrameLayout>
