@@ -1,15 +1,12 @@
 package com.example.dailyhealth.ui.run;
 
+import android.content.Intent;
 import android.os.Bundle;
+import static com.example.dailyhealth.util.Constants.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +14,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.dailyhealth.R;
-import com.example.dailyhealth.ui.user.UserFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.dailyhealth.service.maps.TrackingService;
+import com.example.dailyhealth.util.TrackingUtility;
 
 public class RunFragment extends Fragment {
 	
@@ -32,7 +23,9 @@ public class RunFragment extends Fragment {
 	Fragment recordFragment = new RecordFragment();
 	Button btnViewMap, btnStartRecord;
 	boolean flagBtnViewMap = false;
+	boolean flagBtnStartRecord = false;
 	FragmentManager fragmentManager;
+
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,15 +35,20 @@ public class RunFragment extends Fragment {
 		btnViewMap = fragmentRun.findViewById(R.id.btnViewMap);
 		btnStartRecord = fragmentRun.findViewById(R.id.btnStartRecord);
 		
-		
 		fragmentManager = getChildFragmentManager();
 		fragmentManager.beginTransaction().add(R.id.container, recordFragment).commit();
 		
 		btnStartRecord.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-			
-				
+				flagBtnStartRecord = !flagBtnStartRecord;
+
+				if(flagBtnStartRecord == true){
+					sendCommandToService(ACTION_START_OR_RESUME_SERVICE);
+				} else{
+					sendCommandToService(ACTION_STOP_SERVICE);
+				}
+
 			}
 		});
 		
@@ -103,9 +101,10 @@ public class RunFragment extends Fragment {
 		return fragmentRun;
 		
 	}
-	
-	// findById 넣는 곳
-	private void intitView() {
-	
+
+	public void sendCommandToService(String action) {
+		Intent intent = new Intent(requireContext(), TrackingService.class);
+		intent.setAction(action);
+		requireContext().startService(intent);
 	}
 }

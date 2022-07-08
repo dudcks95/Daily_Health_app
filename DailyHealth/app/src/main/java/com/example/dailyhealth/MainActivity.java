@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,5 +67,20 @@ public class MainActivity extends AppCompatActivity  {
                 return true;
             }
         });
+
+
     }
+/*
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        navigateToTrackingFragmentIfNeeded(intent);
+    }
+
+    private void navigateToTrackingFragmentIfNeeded(Intent intent){
+        NavHostFragment navHostFragment = getSupportFragmentManager().find(R.id.btm_Navibar);
+        if(intent.getAction() == "ACTION_SHOW_TRACKING_FRAGMENT") {
+            navHostFragment.findNavController().navigate(R.id.fragRun);
+        }
+    }*/
 }

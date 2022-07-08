@@ -15,16 +15,13 @@
         <entry key="..\:/Users/cho/Desktop/2022study/DailyHealth/myapplication2/src/main/res/layout/activity_main3.xml" value="0.1" />
         <entry key="..\:/Users/cho/Desktop/2022study/DailyHealth/myapplication3/src/main/res/layout/activity_main4.xml" value="0.1" />
         <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/activity_main.xml" value="0.2798913043478261" />
-        <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/activity_maps.xml" value="0.25729166666666664" />
-        <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/cal.xml" value="0.25729166666666664" />
-        <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/content_maps.xml" value="0.25729166666666664" />
-        <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_cal.xml" value="0.1875" />
-        <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_first.xml" value="0.25729166666666664" />
         <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_maps.xml" value="0.18802083333333333" />
         <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_record.xml" value="0.33125" />
         <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_run.xml" value="0.2798913043478261" />
-        <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_second.xml" value="0.25729166666666664" />
         <entry key="..\:/github/Daily_Health_app/DailyHealth/app/src/main/res/layout/fragment_user.xml" value="0.23072916666666668" />
+        <entry key="..\:/github/Daily_Health_app/DailyHealth/test/src/main/res/layout/activity_main.xml" value="0.23489583333333333" />
+        <entry key="..\:/github/Daily_Health_app/DailyHealth/test/src/main/res/layout/fragment_dashboard.xml" value="0.24947916666666667" />
+        <entry key="..\:/github/Daily_Health_app/DailyHealth/test/src/main/res/layout/fragment_notifications.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>

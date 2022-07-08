@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Daily Health"
 include ':app'
+include ':test'
