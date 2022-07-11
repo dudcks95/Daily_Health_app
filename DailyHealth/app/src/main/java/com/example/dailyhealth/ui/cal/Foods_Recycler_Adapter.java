@@ -21,6 +21,8 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
     private List<Foods> foodList;
     private FoodService foodService;
 
+//    private List<>
+
     public Foods_Recycler_Adapter (List<Foods> foodList){
         this.foodList = foodList;
     }
