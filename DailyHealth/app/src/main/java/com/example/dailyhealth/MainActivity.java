@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.dailyhealth.ui.cal.CalFragment;
@@ -17,9 +17,14 @@ import com.example.dailyhealth.ui.user.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+=======
+
+public class MainActivity extends AppCompatActivity  {
+>>>>>>> parent of 277a2f0 (달력 출력, 음식 검색 완료)
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private CalFragment calFragment = new CalFragment();
     private MsgFragment msgFragment = new MsgFragment();
@@ -28,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout home_ly;
     BottomNavigationView bottomNavigationView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +71,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+<<<<<<< HEAD
 
     MutableLiveData<ArrayList<Object>> mCalendarList = new MutableLiveData<>();
 
+=======
+>>>>>>> parent of 277a2f0 (달력 출력, 음식 검색 완료)
 }
