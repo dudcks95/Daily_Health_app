@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.dailyhealth.ui.cal.CalFragment;
@@ -16,6 +16,9 @@ import com.example.dailyhealth.ui.run.RunFragment;
 import com.example.dailyhealth.ui.user.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
+
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity  {
 
     LinearLayout home_ly;
     BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity  {
 
         home_ly = findViewById(R.id.home_ly);
         bottomNavigationView = findViewById(R.id.btm_Navibar);
+
+
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.home_ly, userFragment).commitAllowingStateLoss();
@@ -66,4 +72,8 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
     }
+
+    MutableLiveData<ArrayList<Object>> mCalendarList = new MutableLiveData<>();
+
+
 }
