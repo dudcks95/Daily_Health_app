@@ -66,7 +66,6 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
                 Intent intent = new Intent(context, OneDay_Record.class);
                 intent.putExtra("month", cal.get(Calendar.MONTH)+1);
                 intent.putExtra("day", data[position].getText().toString().trim());
-//                context.startActivity(intent);
                 launcher.launch(intent);
             }
         });

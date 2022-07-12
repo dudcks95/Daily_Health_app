@@ -1,9 +1,11 @@
 package com.example.dailyhealth.ui.cal;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,12 @@ public class FoodSearch extends AppCompatActivity {
 
         foodList = findViewById(R.id.foodList);
 
+        ActivityResultLauncher<Intent> launcher;
+        Intent intent = getIntent();
+
+        int month = intent.getIntExtra("month", 0);
+        String day = intent.getStringExtra("day");
+
 
         btnBackOneDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +71,7 @@ public class FoodSearch extends AppCompatActivity {
                         manager = new LinearLayoutManager(FoodSearch.this,
                                 RecyclerView.VERTICAL, false);
                         foodList.setLayoutManager(manager);
-                        fAdapter = new Foods_Recycler_Adapter(foodsList);
+                        fAdapter = new Foods_Recycler_Adapter(foodsList, month, day);
                         foodList.setAdapter(fAdapter);
                         fAdapter.notifyDataSetChanged();
                         Log.d("foodList>>",foodList.toString());

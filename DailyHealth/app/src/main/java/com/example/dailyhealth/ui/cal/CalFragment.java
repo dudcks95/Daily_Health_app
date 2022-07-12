@@ -62,7 +62,7 @@ public class CalFragment extends Fragment {
                     public void onActivityResult(ActivityResult data) {
                         if(data.getResultCode() == Activity.RESULT_OK){
                             Intent intent = data.getData();
-                            int result = intent.getIntExtra("result",0);
+                            FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("foodsRecord");
 
                         }
                     }
@@ -125,14 +125,7 @@ public class CalFragment extends Fragment {
         layoutManager = new GridLayoutManager(view.getContext(),7);
         calendarView.setLayoutManager(layoutManager);
         calendarView.setAdapter(calendarAdapter);
-        //calendarAdapter.
 
-//        calendarView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("버튼버튼1",view.getId()+"");
-//            }
-//        });
     }
 
     // 캘린더 날짜 데이터 세팅
