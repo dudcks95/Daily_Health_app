@@ -1,0 +1,41 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
+
+    }
+}
+rootProject.name = "My Application"
+include ':app'
+include ':myapp01'
+include ':myapp02'
+include ':myapp03'
+include ':myapp04'
+include ':myapp05'
+include ':myapp07_intent'
+include ':myapp08_intent'
+include ':myapp09_adapter'
+include ':myapp10_frag'
+include ':myapp11_db'
+include ':myapp12_viewpager'
+include ':myapp13_ch13'
+include ':myapp14_retofit'
+include ':myapp15_retrofit_phone'
+include ':myapp16_retrofit_register'
+include ':myapp17_map'
+include ':mayapp18_service'
+include ':myapp18_service'
+include ':myapp19_phone_retrofit'
+include ':myapp20_member'
+include ':dailyhealth'
+include ':kakaologinexample'
+include ':kakaologin'
