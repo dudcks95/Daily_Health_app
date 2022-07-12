@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/tabUser"
+        android:id="@+id/userFragment"
         android:icon="@drawable/user"
         android:title="사용자"/>
     <item
-        android:id="@+id/tabCal"
+        android:id="@+id/calFragment"
         android:icon="@drawable/calendar"
         android:title="캘린더"/>
     <item
-        android:id="@+id/tabMsg"
+        android:id="@+id/msgFragment"
         android:icon="@drawable/messenger"
         android:title="채팅"/>
     <item
-        android:id="@+id/tabRun"
+        android:id="@+id/runFragment"
         android:icon="@drawable/run"
         android:title="달리기"/>
 </menu>

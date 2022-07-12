@@ -3,22 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dailyhealth">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- goolge maps config -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- goolge maps config -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 외부 저장소 권한 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 사용자의 정확한 위치 정보 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 사용자의 정확도 가 떨어지는 위치 정보 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 사용자의 정확한 위치 정보 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /><!-- 사용자의 정확도 가 떨어지는 위치 정보 -->
+
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICE" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
     <permission
         android:name="com.example.dailyhealth.permission.MAPS_RECEIVE"
         android:label="signature" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -46,7 +50,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,7 +62,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" /> <!-- 위치 정보 받아오는 service 등록 -->
         <service
-            android:name=".service.maps.TrackingService"
+            android:name=".service.TrackingService"
             android:foregroundServiceType="location">
             <!-- Any inner elements would go here. -->
         </service>

@@ -5,12 +5,16 @@ import static com.example.dailyhealth.util.Constants.TAG;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.vmadalin.easypermissions.EasyPermissions;
+
+import java.util.ArrayList;
 
 public class TrackingUtility {
     // 위치 권한 확인
@@ -60,4 +64,23 @@ public class TrackingUtility {
             );
         }
     }*/
+
+    public static float calculatePolyLineLength(ArrayList<LatLng> polyLine){
+        float distance = 0f;
+        for (int i = 0; i < polyLine.size()-2 ; i++) {
+            LatLng pos1 = polyLine.get(i);
+            LatLng pos2 = polyLine.get(i+1);
+            float[] result = new float[1];
+
+            Location.distanceBetween(pos1.latitude
+                    , pos1.longitude
+                    , pos2.latitude
+                    ,pos2.longitude
+                    ,result);
+            Log.d(TAG, "locatin distiance "+ result +"//"+result[0]);
+            distance += result[0];
+        }
+
+        return distance;
+    }
 }

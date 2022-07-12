@@ -1,4 +1,4 @@
-package com.example.dailyhealth.service.maps;
+package com.example.dailyhealth.service;
 
 import static com.example.dailyhealth.util.Constants.*;
 
@@ -33,48 +33,58 @@ import com.google.android.gms.location.SettingsClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class TrackingService extends Service implements LifecycleOwner {
+public class TrackingService extends LifecycleService {
 
-	private LocationRequest locationRequest;
 	private FusedLocationProviderClient fusedLocationProviderClient;    // 위치 정보 제공자 클라이언트
-	private LocationSettingsRequest locationSettingsRequest;
-	private SettingsClient  settingsClient;
-	private Context context;
-	private  boolean isFirstStart = false; // 처음 실행 여부
-
-
 	private LocationCallback locationCallback;
 
-	private Location location; // 현재 위치
 	ArrayList<LatLng> PolyLine = new ArrayList<>(); // 두 점을 이은 선
 	ArrayList<ArrayList<LatLng>> PolyLines = new ArrayList<>(); // 선들을 모은 것
 	// pathPoints => MutableLiveData<PolyLines>()
 	public static MutableLiveData<ArrayList<ArrayList<LatLng>>> pathPoints = new MutableLiveData<>();
-	public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
 	public static MutableLiveData<Location> trackingLocation = new MutableLiveData<>(); // 현재 위피 추적
 
+	public static MutableLiveData<Boolean> isTracking = new MutableLiveData<>();
+	private  boolean isFirstStart = false; // 처음 실행 여부
 
+	// 시간
+	public static MutableLiveData<Long> timeRunInMillis = new MutableLiveData<>(); // 뷰에 표시될 시간
+	private static MutableLiveData<Long> timeRunInSeconds = new MutableLiveData<Long>(); // 알림창에 표시될 시간
+
+	private Boolean isTimerEnabled = false; // 타이머 실행 여부
+	private Long lapTime = 0L; // 시작 후 측정한 시간
+	private Long totalTime = 0L; // 정지 시 저장되는 시간
+	private Long timeStarted = 0L; // 측정 시작된 시간
+	private Long lastSecondTimestamp = 0L; // 1초 단위 체크를 위함
 
 	@Nullable
 	@Override
 	public IBinder onBind(Intent intent) {
+		super.onBind(intent);
 		return null;
 	}
-	
+
+	private void postInitialValues() {
+		isTracking.postValue(false);
+		PolyLines = new ArrayList<>();
+		Log.d(TAG,PolyLines.size() +"/ postInitialValues /"+ PolyLine.toString());
+		pathPoints.postValue(PolyLines);
+		timeRunInSeconds.postValue(0L);
+		timeRunInMillis.postValue(0L);
+	}
+
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "location onCreate()");
@@ -85,27 +95,29 @@ public class TrackingService extends Service implements LifecycleOwner {
 		//위치 서비스 클라이언트 생성
 		fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-//		isTracking.observe(this, new Observer<Boolean>() {
-//			@Override
-//			public void onChanged(Boolean aBoolean) {
-//
-//			}
-//		});
+		isTracking.observe(this, new Observer<Boolean>() {
+			@Override
+			public void onChanged(Boolean aBoolean) {
+				Log.d(TAG, "isTracking observe isTracking : " + aBoolean);
+				updateLocation(aBoolean);
+			}
+		});
+
 		locationCallback = new LocationCallback() {
 			@Override
 			public void onLocationResult(@NonNull LocationResult locationResult) {
 				super.onLocationResult(locationResult);
-
-				if (locationResult == null) {
-					Log.d(TAG,"null");
-					return;
+				if( isTracking.getValue() ){
+					if (locationResult == null) {
+						Log.d(TAG,"null");
+						return;
+					}
+					for (Location location : locationResult.getLocations()) {
+						Log.d(TAG,"add");
+						addPathPoint(location);
+						trackingLocation.setValue(location);
+					}
 				}
-				for (Location location : locationResult.getLocations()) {
-					Log.d(TAG,"add");
-					addPathPoint(location);
-					trackingLocation.setValue(location);
-				}
-
 			}
 		};
 	}
@@ -113,52 +125,46 @@ public class TrackingService extends Service implements LifecycleOwner {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		 switch (intent.getAction()){
-			 case ACTION_START_OR_RESUME_SERVICE:
-				 if(!isFirstStart){
-					 Log.d(TAG,"서비스 시작함" );
-					 isFirstStart = true;
-					 isTracking.setValue(true);
-					 startForegroundService();
-				 }
-				 else{
-					 Log.d(TAG, "서비스 실행중");
-				 }
-				 break;
-			 case ACTION_PAUSE_SERVICE:
-				 Log.d(TAG,"서비스 중지");
-				// pauseService();
-				 break;
-			 case ACTION_STOP_SERVICE:
-				 Log.d(TAG,"서비스 종료");
-				 stopService();
-				 break;
-		 }
+
+		super.onStartCommand(intent, flags, startId);
+		switch (intent.getAction()) {
+			case ACTION_START_OR_RESUME_SERVICE:
+				if (!isFirstStart) {
+					Log.d(TAG, "서비스 시작함");
+					isFirstStart = false;
+					isTracking.postValue(true);
+					startForegroundService();
+				} else {
+					Log.d(TAG, "서비스 실행중");
+				}
+				break;
+			case ACTION_STOP_SERVICE:
+				Log.d(TAG, "서비스 종료");
+				isTracking.postValue(false);
+				stopService();
+				break;
+		}
 		return START_STICKY;
 	}
 
 	public void startForegroundService() {
 
-		updateLocation();
-/*
+		isTracking.postValue(true);
 		// 알림 채널 생성
 		createNotificationChannel();
 
 		// 알림 내용 설정
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-				.setAutoCancel(true)
+				.setAutoCancel(false)
+				.setOngoing(true)
 				.setSmallIcon(R.drawable.run)
-				.setContentTitle("textTitle")
-				.setContentText("textContent")
+				.setContentTitle("Daily Health")
+				.setContentText("running service is on")
 				.setPriority(NotificationCompat.PRIORITY_DEFAULT)
 	 			.setContentIntent(getMainActivityPendingIntent());
 
-
 		// 알림 시작
-		//NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-		// notificationId is a unique int for each notification that you must define
-		//notificationManager.notify(NOTIFICATION_ID, builder.build());
-		startForeground(NOTIFICATION_ID, builder.build());*/
+		startForeground(NOTIFICATION_ID, builder.build());
 	}
 
 	// 알림 채널 만들기 및 중요도 설정
@@ -186,11 +192,10 @@ public class TrackingService extends Service implements LifecycleOwner {
 
 	}
 
-
 	@SuppressLint("MissingPermission")
-	private void updateLocation() {
-		Log.d(TAG,"updateLocation");
-		if(isTracking.getValue()){
+	private void updateLocation(Boolean isTracking) {
+		Log.d(TAG,"updateLocation) isTracking : " + isTracking);
+		if(isTracking){
 			//Location 요청 설정
 			LocationRequest locationRequest = LocationRequest.create();
 			locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
@@ -209,55 +214,42 @@ public class TrackingService extends Service implements LifecycleOwner {
 			task.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
 				@Override
 				public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-					Log.d(TAG,"위치 요청 결과 "+ locationSettingsResponse.getLocationSettingsStates());
-					fusedLocationProviderClient.requestLocationUpdates(locationRequest , locationCallback, Looper.getMainLooper());
-				}
+					Log.d(TAG,"updateLocation) 위치 요청 결과 "+ locationSettingsResponse.getLocationSettingsStates());
+					fusedLocationProviderClient.requestLocationUpdates(locationRequest , locationCallback, Looper.getMainLooper());				}
 			});
 		}else {
-			Log.d(TAG,"위치 removeLocationUpdates");
+			Log.d(TAG,"updateLocation) removeLocationUpdates");
 			fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 		}
 
 	}
 
 	public void addPathPoint(@Nullable Location location){
+
+		Log.d(TAG,"add Point LatLng ) "+location.getLatitude() +" / "+ location.getLongitude());
 		LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-		Log.d(TAG,location.getLatitude() +"///"+location.getLongitude());
 		PolyLine.add(point);
 		PolyLines.add(PolyLine);
 		pathPoints.setValue(PolyLines);
-		Log.d(TAG,PolyLines.size() +"/add Point path Points/"+PolyLine.toString());
-//		pathPoints.add(point);
-	}
-
-	private void postInitialValues() {
-		isTracking.setValue(false);
-		Log.d(TAG,PolyLines.size() +"/postInitialValues /"+PolyLine.toString());
-		pathPoints.setValue(PolyLines);
+		Log.d(TAG,"add Point PolyLines size) " + PolyLines.size());
 	}
 
 
 	private void stopService() {
-		postInitialValues();
+		Log.d(TAG,"stopService ) "+ isTracking.getValue());
 		stopForeground(true);
 		stopSelf();
+		postInitialValues();
 	}
 
 
 	@Override
 	public void onDestroy() {
 		Log.e(TAG, "Service Stopped");
-		
 		if (fusedLocationProviderClient != null) {
 			Log.e(TAG, "Location Update Callback Removed");
 		}
 		super.onDestroy();
 	}
 
-
-	@NonNull
-	@Override
-	public Lifecycle getLifecycle() {
-		return null;
-	}
 }

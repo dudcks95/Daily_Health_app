@@ -3,26 +3,46 @@
             xmlns:app = "http://schemas.android.com/apk/res-auto"
             xmlns:tools = "http://schemas.android.com/tools"
             android:id = "@+id/nav_graph"
-            app:startDestination = "@id/FirstFragment">
+	app:startDestination="@id/userFragment">
 
-    <fragment
-	    android:id = "@+id/FirstFragment"
-	    android:name = "com.example.dailyhealth.ui.run.FirstFragment"
-	    android:label = "@string/first_fragment_label"
-	    tools:layout = "@layout/fragment_first">
-
-        <action
-	        android:id = "@+id/action_FirstFragment_to_SecondFragment"
-	        app:destination = "@id/SecondFragment" />
-    </fragment>
-    <fragment
-	    android:id = "@+id/SecondFragment"
-	    android:name = "com.example.dailyhealth.ui.run.SecondFragment"
-	    android:label = "@string/second_fragment_label"
-	    tools:layout = "@layout/fragment_second">
-
-        <action
-	        android:id = "@+id/action_SecondFragment_to_FirstFragment"
-	        app:destination = "@id/FirstFragment" />
-    </fragment>
+	<fragment
+		android:id="@+id/msgFragment"
+		android:name="com.example.dailyhealth.ui.msg.MsgFragment"
+		android:label="fragment_msg"
+		tools:layout="@layout/fragment_msg" />
+	<fragment
+		android:id="@+id/userFragment"
+		android:name="com.example.dailyhealth.ui.user.UserFragment"
+		android:label="fragment_user"
+		tools:layout="@layout/fragment_user" />
+	<fragment
+		android:id="@+id/calFragment"
+		android:name="com.example.dailyhealth.ui.cal.CalFragment"
+		android:label="fragment_cal"
+		tools:layout="@layout/fragment_cal" />
+	<fragment
+		android:id="@+id/runFragment"
+		android:name="com.example.dailyhealth.ui.run.RunFragment"
+		android:label="fragment_run"
+		tools:layout="@layout/fragment_run" >
+		<action
+			android:id="@+id/action_runFragment_to_trackingFragment2"
+			app:destination="@id/trackingFragment2" />
+	</fragment>
+	<fragment
+		android:id="@+id/trackingFragment"
+		android:name="com.example.dailyhealth.ui.run.TrackingFragment"
+		android:label="TrackingFragment" />
+	<fragment
+		android:id="@+id/trackingFragment2"
+		android:name="com.example.dailyhealth.ui.run.TrackingFragment2"
+		android:label="TrackingFragment2" >
+		<action
+			android:id="@+id/action_trackingFragment2_to_runFragment"
+			app:destination="@id/runFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/stepFragment"
+		android:name="com.example.dailyhealth.ui.run.StepFragment"
+		android:label="StepFragment" />
 </navigation>
