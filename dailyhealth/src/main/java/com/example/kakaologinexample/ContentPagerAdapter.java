@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.kakaologinexample.tab.ChatFragment;
+import com.example.kakaologinexample.tab.CheckFragment;
+import com.example.kakaologinexample.tab.FriendFragment;
+
 public class ContentPagerAdapter extends FragmentStateAdapter {
     private int mPageCount = 3;
 
