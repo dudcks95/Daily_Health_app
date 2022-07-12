@@ -32,6 +32,8 @@ public class MainActivity_register extends AppCompatActivity {
 
         Button registerBtn = findViewById(R.id.registerBtn);
 
+        back = findViewById(R.id.back);
+
         e_name = findViewById(R.id.e_name);
         e_email = findViewById(R.id.e_email);
         e_gender = findViewById(R.id.e_gender);
@@ -68,6 +70,9 @@ public class MainActivity_register extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         Intent intent1 = new Intent(MainActivity_register.this, MainActivity.class);
+                        intent1.putExtra("name",strName);
+                        intent1.putExtra("height",Integer.parseInt(e_height.getText().toString()));
+                        intent1.putExtra("weight",Integer.parseInt(e_weight.getText().toString()));
                         startActivity(intent1);
 
                         Toast.makeText(MainActivity_register.this, "회원등록완료", Toast.LENGTH_SHORT).show();
@@ -81,7 +86,7 @@ public class MainActivity_register extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
