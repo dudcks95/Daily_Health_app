@@ -47,7 +47,7 @@ public class OneDay_Record extends AppCompatActivity {
                         if(data.getResultCode() == Activity.RESULT_OK){
                             Intent intent = data.getData();
                             //int result = intent.getIntExtra("result",0);
-
+                            FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("result");
                         }
                     }
                 });
