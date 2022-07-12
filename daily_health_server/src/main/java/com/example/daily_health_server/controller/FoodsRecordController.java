@@ -21,14 +21,17 @@ public class FoodsRecordController {
 	public FoodsRecord foodinsert(@RequestBody AnFoods anfood) {
 		FoodsRecord foodRecord = new FoodsRecord();
 		Foods food = new Foods();
+		
 		food.setFoodId(anfood.getFoodId());
 		
 		User user = new User();
 		user.setUserid(Long.valueOf(anfood.getUserid()));
+		
 		foodRecord.setFood(food);
 		foodRecord.setMonth(anfood.getMonth());
 		foodRecord.setDay(anfood.getDay());
 		foodRecord.setUser(user);
+		foodRecord.setEatTime(anfood.getEatTime());
 		return foodsRecordService.insert(foodRecord);
 	}
 }
