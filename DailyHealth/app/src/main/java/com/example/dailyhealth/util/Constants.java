@@ -1,7 +1,5 @@
 package com.example.dailyhealth.util;
 
-import android.graphics.Color;
-
 public final class Constants {
 
     public static final String TAG = ">>";
@@ -14,13 +12,6 @@ public final class Constants {
     public static final String ACTION_SHOW_TRACKING_ACTIVITY = "ACTION_SHOW_TRACKING_ACTIVITY";
 
     /**
-     * Tracking 옵션
-     */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000L; //5s
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 2000L; //2s
-    public static final int REQUEST_CODE = 100;
-
-    /**
      * Notification 속성
      */
     public static final String NOTIFICATION_CHANNEL_ID = "tracking_channel";
@@ -29,19 +20,5 @@ public final class Constants {
     public static final int NOTIFICATION_ID = 1; // 채널 ID는 0이면 안됨
 
 
-    /**
-     * 경로 표시 옵션
-     */
-    public static final float POLYLINE_WIDTH = 10f;
-    public static final float MAP_ZOOM = 15f;
-    public static final int  POLYLINE_COLOR = Color.RED;
 
-    // 타이머 갱신 주기
-    public static final long TIMER_UPDATE_INTERVAL = 50L;
-    public static final int REQUEST_CODE_LOCATION_PERMISSION = 0;
-
-    /*
-    * DB
-    * */
-    public static final String RUN_DB_NAME = "RunDB";
 }

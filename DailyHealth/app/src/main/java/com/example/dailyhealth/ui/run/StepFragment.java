@@ -1,15 +1,14 @@
 package com.example.dailyhealth.ui.run;
 
-import android.content.Context;
+import static com.example.dailyhealth.util.Constants.ACTION_START_OR_RESUME_SERVICE;
+import static com.example.dailyhealth.util.Constants.ACTION_STOP_SERVICE;
+import static com.example.dailyhealth.util.Constants.TAG;
+
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -18,27 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dailyhealth.R;
+import com.example.dailyhealth.service.StepService;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link StepFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StepFragment extends Fragment implements SensorEventListener {
+public class StepFragment extends Fragment {
 
-    private SensorManager sensorManager;
-    private Sensor stepCountSensor;
     TextView stepCountView;
-    Button resetButton;
-    //현재 걸음 수
-    private int mSteps = 0;
-    //리스너가 등록되고 난 후의 step count
-    private int mCounterSteps = 0;
-
-    // TODO: Rename parameter arguments, choose names that match
+    Button btnStartStep, btnFinishStep;
+    Boolean isTracking = false;
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -75,7 +67,6 @@ public class StepFragment extends Fragment implements SensorEventListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_step, container, false);
         // 활동 퍼미션 체크
         if(ActivityCompat.checkSelfPermission(getContext(),
@@ -85,64 +76,58 @@ public class StepFragment extends Fragment implements SensorEventListener {
         }
 
         stepCountView = view.findViewById(R.id.stepCountView);
-        resetButton = view.findViewById(R.id.resetButton);
-
-        //센서 연결[걸음수 센서를 이용한 흔듬 감지]
-        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
-        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-
-        if(stepCountSensor == null){
-             Toast.makeText(getContext(),"No Step Detect Sensor",Toast.LENGTH_SHORT).show();
-        }
+        btnStartStep = view.findViewById(R.id.btnStartStep);
+        btnFinishStep = view.findViewById(R.id.btnFinishStep);
+        Log.d(TAG, "step frg " + isTracking);
 
         // 리셋 버튼 추가 - 리셋 기능
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        btnStartStep.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // 현재 걸음수 초기화
-                mSteps = 0;
-                mCounterSteps = 0;
-                stepCountView.setText(Integer.toString(mSteps));
+            public void onClick(View view) {
 
+                    sendCommandToService(ACTION_START_OR_RESUME_SERVICE);
+                    btnStartStep.setVisibility(View.GONE);
+                    btnFinishStep.setVisibility(View.VISIBLE); // when start, you can finish running
             }
+        });
+
+        btnFinishStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCommandToService(ACTION_STOP_SERVICE);
+                btnStartStep.setVisibility(View.VISIBLE);
+                btnFinishStep.setVisibility(View.GONE);
+            }
+        });
+
+        StepService.mSteps.observe(getViewLifecycleOwner(), mSteps->{
+            stepCountView.setText(mSteps.toString());
+        });
+
+        StepService.isTracking.observe(getViewLifecycleOwner(), isTracking ->{
+            this.isTracking = isTracking;
         });
 
         return view;
     }
 
-    public void onStart() {
-        super.onStart();
-        if(stepCountSensor !=null){
-            //센서의 속도 설정
-            sensorManager.registerListener(this,stepCountSensor,SensorManager.SENSOR_DELAY_GAME);
-        }
-    }
-
-
-    public void onStop(){
-        super.onStop();
-        if(sensorManager!=null){
-            sensorManager.unregisterListener(this);
-        }
-    }
-
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.getType() == Sensor.TYPE_STEP_COUNTER){
-
-            //stepcountsenersor는 앱이 꺼지더라도 초기화 되지않는다. 그러므로 우리는 초기값을 가지고 있어야한다.
-            if (mCounterSteps < 1) {
-                // initial value
-                mCounterSteps = (int) event.values[0];
-            }
-            mSteps = (int) event.values[0] - mCounterSteps;
-            stepCountView.setText(Integer.toString(mSteps));
-            Log.i("log: ", "New step detected by STEP_COUNTER sensor. Total step count: " + mSteps );
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "step frg " + isTracking);
+        if( this.isTracking ){
+            btnStartStep.setVisibility(View.GONE);
+            btnFinishStep.setVisibility(View.VISIBLE);
+        }else{
+            btnStartStep.setVisibility(View.VISIBLE);
+            btnFinishStep.setVisibility(View.GONE);
         }
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
+    public void sendCommandToService(String action) {
+        Intent intent = new Intent(requireContext(), StepService.class);
+        intent.setAction(action);
+        requireContext().startService(intent);
     }
+
 }

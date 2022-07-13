@@ -13,7 +13,7 @@
         android:icon="@drawable/messenger"
         android:title="채팅"/>
     <item
-        android:id="@+id/runFragment"
+        android:id="@+id/stepFragment"
         android:icon="@drawable/run"
         android:title="달리기"/>
 </menu>

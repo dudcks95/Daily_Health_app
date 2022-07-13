@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
         android:layout_marginBottom="30dp"
-        android:text="만보계"
+        android:src="@drawable/run"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/stepCountTag"
@@ -43,13 +43,26 @@
         app:layout_constraintTop_toTopOf="@+id/stepCountTag" />
 
     <Button
-        android:id="@+id/resetButton"
+        android:id="@+id/btnStartStep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset"
+        android:text="Start"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/stepCountView"
-        app:layout_constraintStart_toStartOf="@+id/stepCountTag"
-        app:layout_constraintTop_toBottomOf="@+id/stepCountTag" />
+        app:layout_constraintEnd_toStartOf="@+id/btnFinishStep"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepCountView" />
+
+    <Button
+        android:id="@+id/btnFinishStep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish Run"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnStartStep"
+        app:layout_constraintTop_toBottomOf="@+id/stepCountView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

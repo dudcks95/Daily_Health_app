@@ -5,6 +5,11 @@
             android:id = "@+id/nav_graph"
 	app:startDestination="@id/userFragment">
 
+	<action
+		android:id="@+id/action_global_stepFragment"
+		app:destination="@+id/stepFragment"
+		app:launchSingleTop="true"/>
+
 	<fragment
 		android:id="@+id/msgFragment"
 		android:name="com.example.dailyhealth.ui.msg.MsgFragment"
@@ -20,27 +25,8 @@
 		android:name="com.example.dailyhealth.ui.cal.CalFragment"
 		android:label="fragment_cal"
 		tools:layout="@layout/fragment_cal" />
-	<fragment
-		android:id="@+id/runFragment"
-		android:name="com.example.dailyhealth.ui.run.RunFragment"
-		android:label="fragment_run"
-		tools:layout="@layout/fragment_run" >
-		<action
-			android:id="@+id/action_runFragment_to_trackingFragment2"
-			app:destination="@id/trackingFragment2" />
-	</fragment>
-	<fragment
-		android:id="@+id/trackingFragment"
-		android:name="com.example.dailyhealth.ui.run.TrackingFragment"
-		android:label="TrackingFragment" />
-	<fragment
-		android:id="@+id/trackingFragment2"
-		android:name="com.example.dailyhealth.ui.run.TrackingFragment2"
-		android:label="TrackingFragment2" >
-		<action
-			android:id="@+id/action_trackingFragment2_to_runFragment"
-			app:destination="@id/runFragment" />
-	</fragment>
+
+
 	<fragment
 		android:id="@+id/stepFragment"
 		android:name="com.example.dailyhealth.ui.run.StepFragment"
