@@ -51,6 +51,28 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
             <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"/>
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="음식 이름"
+                android:textSize="15dp"/>
+            <TextView
+                android:layout_weight="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kcal"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="아침 : "
@@ -58,13 +80,13 @@
             <TextView
                 android:id="@+id/txMorningMenu"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
             <TextView
                 android:id="@+id/txMorningKcal"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
         </LinearLayout>
@@ -80,13 +102,13 @@
             <TextView
                 android:id="@+id/txLunchMenu"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
             <TextView
                 android:id="@+id/txLunchKcal"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
         </LinearLayout>
@@ -102,13 +124,13 @@
             <TextView
                 android:id="@+id/txDinnerMenu"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
             <TextView
                 android:id="@+id/txDinnerKcal"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"/>
         </LinearLayout>

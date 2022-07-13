@@ -9,8 +9,10 @@ import androidx.lifecycle.MutableLiveData;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.dailyhealth.ui.cal.CalFragment;
+import com.example.dailyhealth.ui.cal.FoodRecordService;
 import com.example.dailyhealth.ui.msg.MsgFragment;
 import com.example.dailyhealth.ui.run.RunFragment;
 import com.example.dailyhealth.ui.user.UserFragment;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity  {
 
     LinearLayout home_ly;
     BottomNavigationView bottomNavigationView;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

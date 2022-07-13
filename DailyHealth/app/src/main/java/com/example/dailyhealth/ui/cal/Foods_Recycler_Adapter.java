@@ -102,7 +102,6 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("foodid>>>",foods.getFoodId()+"");
                         Log.d("foodtime >>>",rdobtnResult+"");
-                        Long foodid = foods.getFoodId();
                         FoodsRecord foodsRecordDto = new FoodsRecord(
                                 foods.getFoodId(),
                                 month,
@@ -122,6 +121,8 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
 
 //                                Intent intent = new Intent();
 //                                intent.putExtra("result",foodList);
+                                notifyDataSetChanged();
+//                                ad.dismiss();
 
                             }
 
@@ -130,11 +131,13 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
 
                             }
                         });
+                        //notifyDataSetChanged();
+
+
                     }
                 });
                 dlg.show();
-
-
+//                ad.show();
             }
         });
     }

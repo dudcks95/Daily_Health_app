@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "foods")
 public class Foods {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long foodId;

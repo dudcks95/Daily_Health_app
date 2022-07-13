@@ -23,8 +23,10 @@ import android.widget.TextView;
 
 import com.example.dailyhealth.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class CalFragment extends Fragment {
 
@@ -36,6 +38,10 @@ public class CalFragment extends Fragment {
     GridLayoutManager layoutManager;
     //저장된 날짜
     private TextView[] StorageCalendar = new TextView[42];
+    private List<Integer> dayNum = new ArrayList<>(42);
+    Calendar_Recycler_Adapter calendarAdapter;
+
+//    private TextView[] StorageCalendar2 = new TextView[42];
 
     //현재 날짜
     GregorianCalendar cal;
@@ -47,7 +53,6 @@ public class CalFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         view = inflater.inflate(R.layout.fragment_cal, container, false);
         prevBtn = (ImageButton) view.findViewById(R.id.prevBtn);
         nextBtn = (ImageButton) view.findViewById(R.id.nextBtn);
@@ -55,17 +60,22 @@ public class CalFragment extends Fragment {
         nextBtn.setOnClickListener(imageBtnClickEvent);
         timeTextView = (TextView) view.findViewById(R.id.timeTextView);
 
+
         launcher= registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult data) {
-                        if(data.getResultCode() == Activity.RESULT_OK){
+                        //if(data.getResultCode() == Activity.RESULT_OK){
+//                            calendarAdapter.getLauncher();
                             Intent intent = data.getData();
-                            FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("foodsRecord");
+                            Log.d("getdata>>",data+"");
+//                            intent.getLongExtra();
+                            //FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("foodsRecord");
+                            Log.d("intent>>",new OneDay_Record().getSum()+"");
 
                         }
-                    }
+                    //}
                 });
 
         for(int i=0; i<StorageCalendar.length; i++){
@@ -80,7 +90,6 @@ public class CalFragment extends Fragment {
             });
         }
 
-
         //현재 날짜
         cal = new GregorianCalendar();
         CalendarSetting(cal);
@@ -88,13 +97,9 @@ public class CalFragment extends Fragment {
         RecyclerViewCreate();
         //Log.d("YYY>>>>",StorageCalendar[6].getText().toString());
 
-
-
         return view;
-
-
-
     }
+
     View.OnClickListener imageBtnClickEvent = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -102,12 +107,16 @@ public class CalFragment extends Fragment {
                 case R.id.prevBtn:
                     cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)-1, 1);
                     Log.d("--------년도>>>>",cal.get(Calendar.YEAR)+"");
-                    Log.d("월>>>>",cal.get(Calendar.MONTH)+"");
+                    Log.d("월>>>>",cal.get(Calendar.MONTH)+1 +"");
+                    Log.d("일자 사이즈>>", (dayNum.size()+1) +"");
+                    dayNum.clear();
                     break;
                 case R.id.nextBtn:
                     cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1,1);
                     Log.d("------------년도>>>>",cal.get(Calendar.YEAR)+"");
-                    Log.d("월>>>>",cal.get(Calendar.MONTH)+"");
+                    Log.d("월>>>>",cal.get(Calendar.MONTH)+1 +"");
+                    Log.d("일자 사이즈>>", (dayNum.size()+1)+ "");
+                    dayNum.clear();
                     break;
             }
             CalendarSetting(cal);
@@ -120,7 +129,7 @@ public class CalFragment extends Fragment {
     public void RecyclerViewCreate(){
         //Recycler Calendar
         calendarView = view.findViewById(R.id.calendar);
-        Calendar_Recycler_Adapter calendarAdapter = new Calendar_Recycler_Adapter(view.getContext(),StorageCalendar,launcher, cal);
+        calendarAdapter = new Calendar_Recycler_Adapter(view.getContext(),StorageCalendar,dayNum,launcher, cal);
 
         layoutManager = new GridLayoutManager(view.getContext(),7);
         calendarView.setLayoutManager(layoutManager);
@@ -154,6 +163,7 @@ public class CalFragment extends Fragment {
         int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
         Log.d("max >>>>>",max+"");
 
+        Log.d("StorageCal >>>", StorageCalendar.length+"");
         for(int i = 0; i<StorageCalendar.length; i++){
             if(i < dayOfWeek) { // 저번달의 끝의 일수를 설정
                 //StorageCalendar[i] = Integer.toString(prevCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)- dayOfWeek + i +1);
@@ -165,12 +175,12 @@ public class CalFragment extends Fragment {
                 StorageCalendar[i].setText("");
             } else { // 이번달 일수
 //                StorageCalendar[i] = " " + (i - dayOfWeek+1) + " ";
-                StorageCalendar[i].setText(" " + (i - dayOfWeek+1) + " ");
+                StorageCalendar[i].setText(" " + (i - dayOfWeek+1) + "  ");
+//                dayNum.add(i - dayOfWeek+1);
             }
         }
         RecyclerViewCreate();
     }
-
 
 
 }

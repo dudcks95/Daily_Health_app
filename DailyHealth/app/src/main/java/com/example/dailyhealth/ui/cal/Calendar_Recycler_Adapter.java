@@ -23,21 +23,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dailyhealth.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+
 import com.example.dailyhealth.ui.cal.OneDay_Record;
+
+import org.w3c.dom.Text;
 
 public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Recycler_Adapter.viewHolder>  {
 
     Context context; // MainActivity
     TextView[] data; // 일자
+    List<Integer> dayNum;
     GregorianCalendar cal; // 날짜
     ActivityResultLauncher<Intent> launcher;
 
-    public Calendar_Recycler_Adapter(Context context, TextView[] data, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
+    public Calendar_Recycler_Adapter(Context context, TextView[] data, List<Integer> dayNum, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
         super();
         this.context = context;
         this.data = data;
+        this.dayNum = dayNum;
         this.launcher = launcher;
 //        Log.d("launcher>>>>>" , ""+launcher);
         this.cal = cal;
@@ -50,14 +57,14 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
         return new viewHolder(view);
     }
 
-
+//    public ActivityResultLauncher<Intent> getLauncher() {
+//        return launcher;
+//    }
 
     @Override
     public void onBindViewHolder(@NonNull Calendar_Recycler_Adapter.viewHolder holder, int position) {
         holder.dayTextView.setText(data[position].getText()); //  일자
-
-
-
+        
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +73,7 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
                 Intent intent = new Intent(context, OneDay_Record.class);
                 intent.putExtra("month", cal.get(Calendar.MONTH)+1);
                 intent.putExtra("day", data[position].getText().toString().trim());
+//                intent.putExtra("day", dayNum+"");
                 launcher.launch(intent);
             }
         });
