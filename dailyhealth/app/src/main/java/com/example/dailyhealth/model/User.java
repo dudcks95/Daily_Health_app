@@ -1,4 +1,4 @@
-package com.example.dailyhealth.ui.user;
+package com.example.dailyhealth.model;
 
 public class User {
     private int userid;

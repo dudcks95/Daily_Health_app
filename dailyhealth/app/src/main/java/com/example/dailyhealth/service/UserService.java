@@ -1,6 +1,6 @@
-package com.example.dailyhealth;
+package com.example.dailyhealth.service;
 
-import com.example.dailyhealth.User;
+import com.example.dailyhealth.model.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

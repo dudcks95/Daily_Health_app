@@ -1,4 +1,6 @@
-package com.example.dailyhealth.ui.cal;
+package com.example.dailyhealth.service;
+
+import com.example.dailyhealth.ui.cal.FoodsRecord;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -1,9 +1,5 @@
 package com.example.dailyhealth.ui.cal;
 
-import com.example.dailyhealth.ui.user.User;
-
-import java.util.Date;
-
 public class FoodsRecord {
     private Long foodRecordId;
     private Long foodId; // foods 기본키

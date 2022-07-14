@@ -51,10 +51,10 @@ public class MainActivity2 extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(MeV2Response result) {
-                        if(result.getKakaoAccount().getEmail() != null) {
+                       /* if(result.getKakaoAccount().getEmail() != null) {
                            Intent intent2 = new Intent(MainActivity2.this, MainActivity.class);
                            startActivity(intent2);
-                        }else{
+                        }else{*/
                             //로그인 성공
                             Intent intent = new Intent(MainActivity2.this, MainActivity_register.class);
                             Log.d("testtest>>>>", "invoke: id333333=" + result.getKakaoAccount().getGender());
@@ -62,7 +62,7 @@ public class MainActivity2 extends AppCompatActivity {
                             intent.putExtra("email", result.getKakaoAccount().getEmail());
                             intent.putExtra("gender", result.getKakaoAccount().getGender());
                             startActivity(intent);
-                        }
+                       // }
                     }
                 });
             }

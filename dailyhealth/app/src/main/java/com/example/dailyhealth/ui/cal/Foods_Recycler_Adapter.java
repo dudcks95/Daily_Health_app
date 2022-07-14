@@ -15,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dailyhealth.R;
-import com.example.dailyhealth.ui.user.User;
+import com.example.dailyhealth.model.Foods;
+import com.example.dailyhealth.model.User;
+import com.example.dailyhealth.service.FoodRecordService;
 
 import java.util.List;
 

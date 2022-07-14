@@ -1,4 +1,6 @@
-package com.example.dailyhealth.ui.cal;
+package com.example.dailyhealth.service;
+
+import com.example.dailyhealth.model.Foods;
 
 import java.util.List;
 

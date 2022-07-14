@@ -1,4 +1,4 @@
-package com.example.dailyhealth.ui.cal;
+package com.example.dailyhealth.model;
 
 public class Foods {
     private Long foodId;

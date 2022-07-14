@@ -1,4 +1,4 @@
-package com.example.dailyhealth;
+package com.example.dailyhealth.ui.user;
 
 import android.view.View;
 import android.view.ViewGroup;

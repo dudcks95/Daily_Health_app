@@ -1,4 +1,4 @@
-package com.example.dailyhealth;
+package com.example.dailyhealth.ui.user;
 
 import android.app.Application;
 import android.content.Context;
