@@ -11,5 +11,11 @@ import com.example.daily_health_server.model.FoodsRecord;
 public interface FoodsRecordRepository extends JpaRepository<FoodsRecord, Long>{
 	@Query(value = "select fr from foods_record fr where userid=?1 and month=?2 and day=?3 and eat_time=?4")
 	public List<FoodsRecord> selectfoodsRecord(Long userid, int month, String day, Long eatTime);
+	
+	@Query(value = "select fr from foods_record fr where userid=?1 and month=?2 and day=?3")
+	public List<FoodsRecord> sumkcal(Long userid, int month, String day);
+	
+	@Query(value = "select fr from foods_record fr where userid=?1 and month=?2")
+	public List<FoodsRecord> sumkcal2(Long userid, int month);
 
 }

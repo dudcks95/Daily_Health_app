@@ -12,4 +12,5 @@ public class AnFoods {
 	    private String day; // 일
 	    private Long eatTime; // 아침:1, 점심:2, 저녁:3
 	    private Long userid; // 유저 기본키
+	    private Long kcal;
 }

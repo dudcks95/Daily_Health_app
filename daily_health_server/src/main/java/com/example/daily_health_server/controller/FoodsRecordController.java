@@ -55,4 +55,37 @@ public class FoodsRecordController {
 		
 		return fd;
 	}
+	
+	@GetMapping("/sumkcal/{userid}/{month}/{day}")
+	public Long sumkcal(@PathVariable Long userid, @PathVariable int month, @PathVariable String day){
+		List<FoodsRecord> sumk = foodsRecordService.sumkcal(userid, month, day);
+		List<Foods> fd = new ArrayList<Foods>();
+//		List<Long> sumresult;
+		Long sum = 0L;
+		for(int i = 0; i<sumk.size(); i++) {
+			
+			Foods food = sumk.get(i).getFood();	
+			
+			sum += food.getKcal();
+			System.out.println(food.getFoodName());
+			System.out.println(food.getKcal());
+		}
+		System.out.println("칼로리 합계="+sum);
+		return sum;
+	}
+
+	
+	@GetMapping("/sumkcal/{userid}/{month}")
+	public List<AnFoods> sumkcal(@PathVariable Long userid, @PathVariable int month){
+		List<AnFoods> an = new ArrayList<AnFoods>();
+		List<FoodsRecord> sumk = foodsRecordService.sumkcal2(userid, month);
+		for(FoodsRecord fr : sumk) {
+			AnFoods anfoods= new AnFoods();
+			anfoods.setDay(fr.getDay());
+			anfoods.setFoodId(fr.getFood().getFoodId());
+			anfoods.setKcal(fr.getFood().getKcal());
+			an.add(anfoods);
+		}
+		return an;
+	}
 }
