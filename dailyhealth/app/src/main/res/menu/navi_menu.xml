@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/tabUser"
@@ -16,4 +17,18 @@
         android:id="@+id/tabRun"
         android:icon="@drawable/run"
         android:title="달리기"/>
+</menu>-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/userFragment"
+        android:icon="@drawable/user"
+        android:title="사용자"/>
+    <item
+        android:id="@+id/calFragment"
+        android:icon="@drawable/calendar"
+        android:title="캘린더"/>
+    <item
+        android:id="@+id/stepFragment"
+        android:icon="@drawable/run"
+        android:title="만보기"/>
 </menu>

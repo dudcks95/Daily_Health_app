@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dailyhealth.MainActivity_register;
 import com.example.dailyhealth.R;
 
 
