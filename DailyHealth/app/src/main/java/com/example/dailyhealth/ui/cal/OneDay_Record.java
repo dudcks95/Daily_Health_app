@@ -159,9 +159,10 @@ public class OneDay_Record extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra("sum", sum);
-                Log.d("sum>>", sum+"");
+//                Intent intent = new Intent(OneDay_Record.this, CalFragment.class);
+//                intent.putExtra("sum", sum);
+//                Log.d("sum>>", sum+"");
+//                startActivity(intent);
 
                 finish();
             }

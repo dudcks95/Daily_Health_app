@@ -57,14 +57,10 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
         return new viewHolder(view);
     }
 
-//    public ActivityResultLauncher<Intent> getLauncher() {
-//        return launcher;
-//    }
-
     @Override
     public void onBindViewHolder(@NonNull Calendar_Recycler_Adapter.viewHolder holder, int position) {
         holder.dayTextView.setText(data[position].getText()); //  일자
-        
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
