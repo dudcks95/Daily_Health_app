@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android = "http://schemas.android.com/apk/res/android"
+            xmlns:app = "http://schemas.android.com/apk/res-auto"
+            xmlns:tools = "http://schemas.android.com/tools"
+            android:id = "@+id/nav_graph"
+	app:startDestination="@id/userFragment">
+
+	<action
+		android:id="@+id/action_global_stepFragment"
+		app:destination="@+id/stepFragment"
+		app:launchSingleTop="true"/>
+
+	<fragment
+		android:id="@+id/userFragment"
+		android:name="com.example.dailyhealth.ui.user.UserFragment"
+		android:label="fragment_user"
+		tools:layout="@layout/fragment_user" />
+	<fragment
+		android:id="@+id/calFragment"
+		android:name="com.example.dailyhealth.ui.cal.CalFragment"
+		android:label="fragment_cal"
+		tools:layout="@layout/fragment_cal" />
+
+	<fragment
+		android:id="@+id/stepFragment"
+		android:name="com.example.dailyhealth.ui.run.StepFragment"
+		android:label="StepFragment" />
+</navigation>

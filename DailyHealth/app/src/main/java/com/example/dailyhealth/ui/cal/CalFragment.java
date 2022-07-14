@@ -22,11 +22,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dailyhealth.R;
+import com.example.dailyhealth.model.FoodsRecord;
+import com.example.dailyhealth.service.FoodRecordService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CalFragment extends Fragment {
 
@@ -41,12 +49,16 @@ public class CalFragment extends Fragment {
     private List<Integer> dayNum = new ArrayList<>(42);
     Calendar_Recycler_Adapter calendarAdapter;
 
-//    private TextView[] StorageCalendar2 = new TextView[42];
+    private FoodRecordService foodRecordService;
 
     //현재 날짜
     GregorianCalendar cal;
 
     ActivityResultLauncher<Intent> launcher;
+
+//    List<FoodsRecord> kcalList = new ArrayList<>();
+//    FoodsRecord[] kcalList = new FoodsRecord[31];
+    Map<String, Long> kcalList = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +73,33 @@ public class CalFragment extends Fragment {
         timeTextView = (TextView) view.findViewById(R.id.timeTextView);
 
 
+
+        foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
+
+//        Call<Long> call = foodRecordService.sumkcal(1L, (cal.get(Calendar.MONTH) + 1),StorageCalendar[i].getText().toString() );
+//        call.enqueue(new Callback<Long>() {
+//            @Override
+//            public void onResponse(Call<Long> call, Response<Long> response) {
+//                Long result = response.body();
+//                Log.d("result>>", result + "");
+//                if (result > 0) {
+////                    Log.d("result>>>>",result+"");
+//                    Log.d("result>>>>", result + "");
+//                    for (int i = 0; i < result; i++) {
+//
+//                    }
+//                    kcalList[]
+//                } else {
+//                    Log.d("null", "null.");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Long> call, Throwable t) {
+//
+//            }
+//        });
+//
         launcher= registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -72,7 +111,7 @@ public class CalFragment extends Fragment {
                             Log.d("getdata>>",data+"");
 //                            intent.getLongExtra();
                             //FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("foodsRecord");
-                            Log.d("intent>>",new OneDay_Record().getSum()+"");
+//                            Log.d("intent>>",new OneDay_Record().getSum()+"");
 
                         }
                     //}
@@ -163,21 +202,68 @@ public class CalFragment extends Fragment {
         int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
         Log.d("max >>>>>",max+"");
 
+
+        Call<List<FoodsRecord>> call = foodRecordService.sumkcal2(1L, (cal.get(Calendar.MONTH) + 1));
+
+        call.enqueue(new Callback<List<FoodsRecord>>() {
+            @Override
+            public void onResponse(Call<List<FoodsRecord>> call, Response<List<FoodsRecord>> response) {
+                List<FoodsRecord> result = response.body();
+                Log.d("Log",result+"");
+//                for(FoodsRecord foodsRecord: result) {
+                for(int i=0; i<result.size(); i++) {
+                    String day = result.get(i).getDay();
+//                    kcalList[Integer.parseInt(day)-1] = foodsRecord;
+//                    kcalList.add(foodsRecord);
+
+
+                    if(kcalList.get(i+"") != null){
+                        kcalList.put(day, result.get(i).getKcal()+kcalList.get(i+""));
+                        return;
+                    }
+                    Log.d("kcal>>",result.get(i).getKcal()+"");
+                    kcalList.put(day,result.get(i).getKcal());
+                }
+
+                Log.d("Log",kcalList.size()+"");
+            }
+
+            @Override
+            public void onFailure(Call<List<FoodsRecord>> call, Throwable t) {
+
+            }
+        });
+
+
+
         Log.d("StorageCal >>>", StorageCalendar.length+"");
         for(int i = 0; i<StorageCalendar.length; i++){
             if(i < dayOfWeek) { // 저번달의 끝의 일수를 설정
                 //StorageCalendar[i] = Integer.toString(prevCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)- dayOfWeek + i +1);
                 //StorageCalendar[i] = "";
-                StorageCalendar[i].setText("");
+                StorageCalendar[i].append("");
+                StorageCalendar[i].setEnabled(false);
             } else if (i > (max + dayOfWeek)) { // 이번 달의 끝 이후의 일수를 설정
 //                StorageCalendar[i] = Integer.toString(i - (max+dayOfWeek));
 //                StorageCalendar[i].setText(Integer.toString(i - (max+dayOfWeek)));
-                StorageCalendar[i].setText("");
+                StorageCalendar[i].append("");
+                StorageCalendar[i].setEnabled(false);
             } else { // 이번달 일수
 //                StorageCalendar[i] = " " + (i - dayOfWeek+1) + " ";
-                StorageCalendar[i].setText(" " + (i - dayOfWeek+1) + "  ");
-//                dayNum.add(i - dayOfWeek+1);
+                    //StorageCalendar[i].append(" " + (i - dayOfWeek+1) + " \n");
+//                    StorageCalendar[i].append(kcalList.get(i).toString());
+                    String s= String.valueOf(i);
+                    if(kcalList.containsKey(s)) {
+                        Log.d("log>>>>", kcalList.get(s).toString());
+                        StorageCalendar[i].append(kcalList.get(s).toString());
+                    }
+//                    static  int j =i;
+
+
             }
+
+
+
         }
         RecyclerViewCreate();
     }

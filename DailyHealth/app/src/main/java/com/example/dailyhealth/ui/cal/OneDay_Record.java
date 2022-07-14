@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dailyhealth.R;
+import com.example.dailyhealth.model.Foods;
+import com.example.dailyhealth.service.FoodRecordService;
 
 import java.util.List;
 
@@ -89,8 +91,8 @@ public class OneDay_Record extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
                 List<Foods> foodsList = response.body();
-//                Log.d("sizemorning>>",foodsList.size()+"");
-                if(foodsList != null){
+                Log.d("sizemorning>>",foodsList.size()+"");
+                if(foodsList.size() > 0){
                     txMorningMenu.setText(foodsList.get(0).getFoodName());
                     txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
                     sum += Long.parseLong(txMorningKcal.getText().toString());
@@ -103,7 +105,7 @@ public class OneDay_Record extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Foods>> call, Throwable t) {
-//                Log.d("result>>>" , "null입니다.");
+                Log.d("result>>>" , "null입니다.");
             }
         });
 
@@ -112,8 +114,8 @@ public class OneDay_Record extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
                 List<Foods> foodsList = response.body();
-//                Log.d("sizelunch>>",foodsList.size()+"");
-                if(foodsList != null){
+                Log.d("sizelunch>>",foodsList.size()+"");
+                if(foodsList.size() > 0){
                     txLunchMenu.setText(foodsList.get(0).getFoodName());
                     txLunchKcal.setText(foodsList.get(0).getKcal().toString().trim());
                     sum += Long.parseLong(txLunchKcal.getText().toString());
@@ -135,8 +137,9 @@ public class OneDay_Record extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
                 List<Foods> foodsList = response.body();
-//                Log.d("sizedinner>>",foodsList.size()+"");
-                if(foodsList != null){
+                Log.d("response>>",foodsList+"");
+                Log.d("sizedinner>>",foodsList.size()+"");
+                if(foodsList.size() > 0){
                     txDinnerMenu.setText(foodsList.get(0).getFoodName());
                     txDinnerKcal.setText(foodsList.get(0).getKcal().toString().trim());
                     sum += Long.parseLong(txDinnerKcal.getText().toString());

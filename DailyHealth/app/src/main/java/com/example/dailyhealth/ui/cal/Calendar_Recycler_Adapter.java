@@ -28,9 +28,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.example.dailyhealth.service.FoodRecordService;
 import com.example.dailyhealth.ui.cal.OneDay_Record;
 
 import org.w3c.dom.Text;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Recycler_Adapter.viewHolder>  {
 
@@ -39,6 +44,8 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
     List<Integer> dayNum;
     GregorianCalendar cal; // 날짜
     ActivityResultLauncher<Intent> launcher;
+    private FoodRecordService foodRecordService;
+
 
     public Calendar_Recycler_Adapter(Context context, TextView[] data, List<Integer> dayNum, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
         super();
@@ -58,8 +65,11 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Calendar_Recycler_Adapter.viewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.dayTextView.setText(data[position].getText()); //  일자
+
+        foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
+
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

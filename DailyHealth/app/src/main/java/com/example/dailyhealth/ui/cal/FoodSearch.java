@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.dailyhealth.R;
+import com.example.dailyhealth.model.Foods;
+import com.example.dailyhealth.service.FoodService;
 
 import java.util.List;
 

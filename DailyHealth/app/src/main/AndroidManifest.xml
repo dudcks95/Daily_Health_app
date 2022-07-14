@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dailyhealth">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -10,6 +13,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:name=".ui.user.CustomApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DailyHealth"
@@ -19,19 +23,50 @@
             android:exported="false" />
         <activity
             android:name=".ui.cal.OneDay_Record"
-            android:exported="true" />
+            android:exported="false" />
         <activity
-            android:name=".ui.cal.CalFragment"
-            tools:ignore="Instantiatable" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".util.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".MainActivity_register"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao$96b0705616358fb23fddf347aade35c2" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="96b0705616358fb23fddf347aade35c2" />
+        <service
+            android:name=".service.StepService"
+            android:foregroundServiceType="location" />
+
     </application>
 
 </manifest>
