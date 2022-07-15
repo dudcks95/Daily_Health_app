@@ -3,6 +3,7 @@ package com.example.dailyhealth.ui.cal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,9 +79,13 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
                 Log.d("버튼ID >>>>>",data[position].getText().toString()+"");
                 Intent intent = new Intent(context, OneDay_Record.class);
                 intent.putExtra("month", cal.get(Calendar.MONTH)+1);
-                intent.putExtra("day", data[position].getText().toString().trim());
+                String st[] = data[position].getText().toString().split(" ");
+                intent.putExtra("day", st[0]);
+//                Log.d("day>>",)
+
 //                intent.putExtra("day", dayNum+"");
                 launcher.launch(intent);
+                holder.itemView.setBackgroundColor(Color.BLUE);
             }
         });
 

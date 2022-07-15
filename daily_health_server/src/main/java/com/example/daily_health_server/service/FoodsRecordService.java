@@ -18,16 +18,16 @@ public class FoodsRecordService {
 		return foodsRecordRepository.save(foodsRecord);
 	}
 	
-	public List<FoodsRecord> selectfoodsRecord(Long userid, int month, String day, Long eatTime){
-		return foodsRecordRepository.selectfoodsRecord(userid, month, day, eatTime);
-	}
+//	public List<FoodsRecord> selectfoodsRecord(Long userid, int month, String day, Long eatTime){
+//		return foodsRecordRepository.selectfoodsRecord(userid, month, day, eatTime);
+//	}
 	
 	public List<FoodsRecord> findAll(){
 		return foodsRecordRepository.findAll();
 	}
 	
-	public List<FoodsRecord> sumkcal (Long userid, int month, String day){
-		return foodsRecordRepository.sumkcal(userid, month, day);
+	public List<FoodsRecord> selectfoodsRecord (Long userid, int month, String day){
+		return foodsRecordRepository.selectfoodsRecord(userid, month, day);
 	}
 	
 	public List<FoodsRecord> sumkcal2 (Long userid, int month){

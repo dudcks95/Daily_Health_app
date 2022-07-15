@@ -17,9 +17,13 @@ public interface FoodRecordService {
     Call<FoodsRecord> insert(@Body FoodsRecord foodsRecord);
 
 
-    @GET("/selectfoodsRecord/{userid}/{month}/{day}/{eatTime}")
-    Call<List<Foods>> selectfoodsRecord(@Path("userid") Long userid, @Path("month") int month,
-                                        @Path("day") String day, @Path("eatTime") Long eatTime);
+//    @GET("/selectfoodsRecord/{userid}/{month}/{day}/{eatTime}")
+//    Call<List<Foods>> selectfoodsRecord(@Path("userid") Long userid, @Path("month") int month,
+//                                        @Path("day") String day, @Path("eatTime") Long eatTime);
+
+    @GET("/selectfoodsRecord/{userid}/{month}/{day}")
+    Call<List<FoodsRecord>> selectfoodsRecord(@Path("userid") Long userid, @Path("month") int month,
+                                        @Path("day") String day);
 
     @GET("/sumkcal/{userid}/{month}/{day}")
     Call<Long> sumkcal(@Path("userid") Long userid, @Path("month") int month,

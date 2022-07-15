@@ -3,6 +3,7 @@ package com.example.dailyhealth.model;
 public class FoodsRecord {
     private Long foodRecordId;
     private Long foodId; // foods 기본키
+    private String foodName;
 //    private Foods food;
 //    private Date oneDay;
     private int month; // 월
@@ -13,6 +14,14 @@ public class FoodsRecord {
 //    private User user;
     public FoodsRecord(){
 
+    }
+
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
     public Long getKcal() {

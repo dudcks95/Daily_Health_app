@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.dailyhealth.R;
 import com.example.dailyhealth.model.Foods;
+import com.example.dailyhealth.model.FoodsRecord;
 import com.example.dailyhealth.service.FoodRecordService;
 
 import java.util.List;
@@ -29,7 +30,7 @@ import retrofit2.Response;
 public class OneDay_Record extends AppCompatActivity {
     ImageButton btnBack;
     TextView txDay, txMorningMenu, txMorningKcal, txLunchMenu, txLunchKcal, txDinnerMenu, txDinnerKcal;
-    Button btnFood;
+    Button btnFood, btnTrain;
     int monththis;
     String daythis;
     Long sum = 0L;
@@ -44,6 +45,7 @@ public class OneDay_Record extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         txDay = findViewById(R.id.txDay);
         btnFood = findViewById(R.id.btnFood);
+        btnTrain = findViewById(R.id.btnTrain);
 
         txMorningMenu = findViewById(R.id.txMorningMenu);
         txMorningKcal = findViewById(R.id.txMorningKcal);
@@ -86,76 +88,84 @@ public class OneDay_Record extends AppCompatActivity {
 //                });
 
         foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
-        Call<List<Foods>> callmorning = foodRecordService.selectfoodsRecord(1L, monththis, daythis, 1L);
-        callmorning.enqueue(new Callback<List<Foods>>() {
+        Call<List<FoodsRecord>> callmorning = foodRecordService.selectfoodsRecord(1L, monththis, daythis);
+        callmorning.enqueue(new Callback<List<FoodsRecord>>() {
             @Override
-            public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
-                List<Foods> foodsList = response.body();
+            public void onResponse(Call<List<FoodsRecord>> call, Response<List<FoodsRecord>> response) {
+                List<FoodsRecord> foodsList = response.body();
                 Log.d("sizemorning>>",foodsList.size()+"");
-                if(foodsList.size() > 0){
+
+                if(foodsList != null && foodsList.size() > 0){
+                    Log.d("sizemorning>>",foodsList.size()+"");
+                    Log.d("foodsList>>>",foodsList.get(1).getFoodName());
+                    Log.d("eatTIme>>",foodsList.get(1).getEatTime()+"");
                     txMorningMenu.setText(foodsList.get(0).getFoodName());
                     txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
-                    sum += Long.parseLong(txMorningKcal.getText().toString());
-                    Intent intent = new Intent();
-                    intent.putExtra("sum", sum);
+                    txLunchMenu.setText(foodsList.get(1).getFoodName());
+                    txLunchKcal.setText(foodsList.get(1).getKcal().toString().trim());
+                    txDinnerMenu.setText(foodsList.get(2).getFoodName());
+                    txDinnerKcal.setText(foodsList.get(2).getKcal().toString().trim());
+//                    sum += Long.parseLong(txMorningKcal.getText().toString());
+//                    Intent intent = new Intent();
+//                    intent.putExtra("sum", sum);
                 }else{
                     Log.d("result>>>" , "null입니다.");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Foods>> call, Throwable t) {
+            public void onFailure(Call<List<FoodsRecord>> call, Throwable t) {
                 Log.d("result>>>" , "null입니다.");
             }
         });
 
-        Call<List<Foods>> callLunch = foodRecordService.selectfoodsRecord(1L, monththis, daythis, 2L);
-        callLunch.enqueue(new Callback<List<Foods>>() {
-            @Override
-            public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
-                List<Foods> foodsList = response.body();
-                Log.d("sizelunch>>",foodsList.size()+"");
-                if(foodsList.size() > 0){
-                    txLunchMenu.setText(foodsList.get(0).getFoodName());
-                    txLunchKcal.setText(foodsList.get(0).getKcal().toString().trim());
-                    sum += Long.parseLong(txLunchKcal.getText().toString());
-                    Intent intent = new Intent();
-                    intent.putExtra("sum", sum);
-                }else{
-                    Log.d("result>>>" , "null입니다.");
-                }
-            }
+//        Call<List<Foods>> callLunch = foodRecordService.selectfoodsRecord(1L, monththis, daythis, 2L);
+//        callLunch.enqueue(new Callback<List<Foods>>() {
+//            @Override
+//            public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
+//                List<Foods> foodsList = response.body();
+////                Log.d("sizelunch>>",foodsList.size()+"");
+//                if(foodsList != null && foodsList.size() > 0){
+//                    txLunchMenu.setText(foodsList.get(0).getFoodName());
+//                    txLunchKcal.setText(foodsList.get(0).getKcal().toString().trim());
+//                    sum += Long.parseLong(txLunchKcal.getText().toString());
+//                    Intent intent = new Intent();
+//                    intent.putExtra("sum", sum);
+//                }else{
+//                    Log.d("result>>>" , "null입니다.");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Foods>> call, Throwable t) {
+//
+//            }
+//        });
+//
+//        Call<List<Foods>> callDinner = foodRecordService.selectfoodsRecord(1L, monththis, daythis, 3L);
+//        callDinner.enqueue(new Callback<List<Foods>>() {
+//            @Override
+//            public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
+//                List<Foods> foodsList = response.body();
+////                Log.d("response>>",foodsList+"");
+////                Log.d("sizedinner>>",foodsList.size()+"");
+//                if(foodsList != null && foodsList.size() > 0){
+//                    txDinnerMenu.setText(foodsList.get(0).getFoodName());
+//                    txDinnerKcal.setText(foodsList.get(0).getKcal().toString().trim());
+//                    sum += Long.parseLong(txDinnerKcal.getText().toString());
+//                    Intent intent = new Intent();
+//                    intent.putExtra("sum", sum);
+//                }else{
+//                    Log.d("result>>>" , "null입니다.");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Foods>> call, Throwable t) {
+//
+//            }
+//        });
 
-            @Override
-            public void onFailure(Call<List<Foods>> call, Throwable t) {
-
-            }
-        });
-
-        Call<List<Foods>> callDinner = foodRecordService.selectfoodsRecord(1L, monththis, daythis, 3L);
-        callDinner.enqueue(new Callback<List<Foods>>() {
-            @Override
-            public void onResponse(Call<List<Foods>> call, Response<List<Foods>> response) {
-                List<Foods> foodsList = response.body();
-                Log.d("response>>",foodsList+"");
-                Log.d("sizedinner>>",foodsList.size()+"");
-                if(foodsList.size() > 0){
-                    txDinnerMenu.setText(foodsList.get(0).getFoodName());
-                    txDinnerKcal.setText(foodsList.get(0).getKcal().toString().trim());
-                    sum += Long.parseLong(txDinnerKcal.getText().toString());
-                    Intent intent = new Intent();
-                    intent.putExtra("sum", sum);
-                }else{
-                    Log.d("result>>>" , "null입니다.");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Foods>> call, Throwable t) {
-
-            }
-        });
-//        Log.d("sum>>", sum+"");
 
 
 
@@ -179,6 +189,13 @@ public class OneDay_Record extends AppCompatActivity {
                 intent1.putExtra("day", day);
                 startActivity(intent1);
 //                launcher.launch(intent1);
+            }
+        });
+
+        btnTrain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //View dialogView =
             }
         });
 
