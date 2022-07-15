@@ -3,6 +3,7 @@ package com.example.dailyhealth.ui.cal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,27 +20,41 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ComponentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dailyhealth.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+
+import com.example.dailyhealth.service.FoodRecordService;
 import com.example.dailyhealth.ui.cal.OneDay_Record;
+
+import org.w3c.dom.Text;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Recycler_Adapter.viewHolder>  {
 
     Context context; // MainActivity
     TextView[] data; // 일자
+    List<Integer> dayNum;
     GregorianCalendar cal; // 날짜
-    ActivityResultLauncher<Intent> launcher;
+    ActivityResultLauncher<Intent> launcher ;
+    private FoodRecordService foodRecordService;
 
-    public Calendar_Recycler_Adapter(Context context, TextView[] data, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
+
+    public Calendar_Recycler_Adapter(Context context, TextView[] data, List<Integer> dayNum, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
         super();
         this.context = context;
         this.data = data;
+        this.dayNum = dayNum;
         this.launcher = launcher;
-//        Log.d("launcher>>>>>" , ""+launcher);
         this.cal = cal;
     }
 
@@ -50,14 +65,11 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
         return new viewHolder(view);
     }
 
-
-
     @Override
-    public void onBindViewHolder(@NonNull Calendar_Recycler_Adapter.viewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.dayTextView.setText(data[position].getText()); //  일자
 
-
-
+        foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,8 +77,16 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
                 Log.d("버튼ID >>>>>",data[position].getText().toString()+"");
                 Intent intent = new Intent(context, OneDay_Record.class);
                 intent.putExtra("month", cal.get(Calendar.MONTH)+1);
-                intent.putExtra("day", data[position].getText().toString().trim());
-                launcher.launch(intent);
+                String st[] = data[position].getText().toString().split(" ");
+                intent.putExtra("day", st[0]);
+                context.startActivity(intent);
+//                        .launch(intent);
+           /*     ConfirmationAction action =
+                        SpecifyAmountFragmentDirections.confirmationAction();
+                action.setAmount(amount);
+                Navigation.findNavController(view).navigate(action);*/
+
+                holder.itemView.setBackgroundColor(Color.BLUE);
             }
         });
 

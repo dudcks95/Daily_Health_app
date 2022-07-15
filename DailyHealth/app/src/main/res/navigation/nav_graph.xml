@@ -25,4 +25,9 @@
 		android:id="@+id/stepFragment"
 		android:name="com.example.dailyhealth.ui.run.StepFragment"
 		android:label="StepFragment" />
+	<activity
+		android:id="@+id/mainActivity_register"
+		android:name="com.example.dailyhealth.MainActivity_register"
+		android:label="activity_main_register"
+		tools:layout="@layout/activity_main_register" />
 </navigation>

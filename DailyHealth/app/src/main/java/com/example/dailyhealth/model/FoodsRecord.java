@@ -1,17 +1,36 @@
-package com.example.dailyhealth.ui.cal;
+package com.example.dailyhealth.model;
 
 public class FoodsRecord {
     private Long foodRecordId;
     private Long foodId; // foods 기본키
+    private String foodName;
 //    private Foods food;
 //    private Date oneDay;
     private int month; // 월
     private String day; // 일
     private Long eatTime; // 아침:1, 점심:2, 저녁:3
     private Long userid; // 유저 기본키
+    private Long kcal;
 //    private User user;
+    public FoodsRecord(){
 
+    }
 
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
+
+    public Long getKcal() {
+        return kcal;
+    }
+
+    public void setKcal(Long kcal) {
+        this.kcal = kcal;
+    }
 
     public FoodsRecord(Long foodId, int month, String day, Long eatTime, Long userid) {
         this.foodId = foodId;

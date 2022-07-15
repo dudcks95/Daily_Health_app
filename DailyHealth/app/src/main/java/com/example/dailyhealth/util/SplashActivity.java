@@ -3,6 +3,7 @@ package com.example.dailyhealth.util;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.dailyhealth.MainActivity;
 import com.example.dailyhealth.MainActivity2;
 
 import androidx.appcompat.app.AppCompatActivity;

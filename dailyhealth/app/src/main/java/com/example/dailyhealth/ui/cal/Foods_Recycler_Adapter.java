@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dailyhealth.R;
 import com.example.dailyhealth.model.Foods;
+import com.example.dailyhealth.model.FoodsRecord;
 import com.example.dailyhealth.model.User;
 import com.example.dailyhealth.service.FoodRecordService;
+
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
     private List<FoodsRecord> foodsRecordList;
     private Long rdobtnResult;
     private User user;
-    Foods foods;
+
     int month;
     String day;
     Context context;
@@ -57,7 +59,7 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        foods = foodList.get(position);
+        Foods foods = foodList.get(position);
         holder.txFoodName.setText(foods.getFoodName());
         holder.txFoodKcal.setText(foods.getKcal().toString());
 
@@ -80,6 +82,22 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
                 txFat.setText(foods.getFat().toString());
 
 
+                rdoGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        if (i == R.id.rdoBreakfast){
+                            rdobtnResult = 1L;
+                            Log.d("foodtime >>>",rdobtnResult+"");
+                        } else if(i == R.id.rdoLunch){
+                            rdobtnResult = 2L;
+                            Log.d("foodtime >>>",rdobtnResult+"");
+                        } else if(i == R.id.rdoDinner){
+                            rdobtnResult = 3L;
+                            Log.d("foodtime >>>",rdobtnResult+"");
+                        }
+                    }
+                });
+
                 AlertDialog.Builder dlg = new AlertDialog.Builder(view.getContext());
                 dlg.setTitle("음식 정보(1회 기준량)");
                 dlg.setView(dialogView);
@@ -87,38 +105,28 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("foodid>>>",foods.getFoodId()+"");
-                        RadioGroup.OnCheckedChangeListener radioGroupBtn = new RadioGroup.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                                if (i == R.id.rdoBreakfast){
-                                    rdobtnResult = 1L;
-                                } else if(i == R.id.rdoLunch){
-                                    rdobtnResult = 2L;
-                                } else if(i == R.id.rdoDinner){
-                                    rdobtnResult = 3L;
-                                }
-                            }
-                        };
                         Log.d("foodtime >>>",rdobtnResult+"");
-                        Long foodid = foods.getFoodId();
                         FoodsRecord foodsRecordDto = new FoodsRecord(
                                 foods.getFoodId(),
                                 month,
                                 day,
-                                1L,
-                                //user.getUserid()
+                                rdobtnResult,
+//                                user.getUserid()
                                 1L
                         );
-//                        foodsRecordDto.setFoodId(foods.getFoodId());
-//                        foodsRecordDto.set
+
                         foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
                         Call<FoodsRecord> call = foodRecordService.insert(foodsRecordDto);
                         call.enqueue(new Callback<FoodsRecord>() {
                             @Override
                             public void onResponse(Call<FoodsRecord> call, Response<FoodsRecord> response) {
 //                                addItem(response.body());
-                                Intent intent = new Intent();
-                                //intent.putExtra("foodsRecord",foods);
+//                                FoodsRecord foodsRecord = new FoodsRecord(Long foodId, int month, String day, Long rdobtnResult, Long userid);
+
+//                                Intent intent = new Intent();
+//                                intent.putExtra("result",foodList);
+                                notifyDataSetChanged();
+//                                ad.dismiss();
 
                             }
 
@@ -127,10 +135,13 @@ public class Foods_Recycler_Adapter extends RecyclerView.Adapter<Foods_Recycler_
 
                             }
                         });
+                        //notifyDataSetChanged();
+
 
                     }
                 });
                 dlg.show();
+//                ad.show();
             }
         });
     }

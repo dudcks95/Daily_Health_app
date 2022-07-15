@@ -1,6 +1,10 @@
 package com.example.dailyhealth;
 
+import static com.example.dailyhealth.util.Constants.PREFERENCE_FILE_KEY;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -29,7 +33,9 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
+        Context context = getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
         getAppKeyHash();
 
         mSessionCallback = new ISessionCallback() {
@@ -61,6 +67,7 @@ public class MainActivity2 extends AppCompatActivity {
                             intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
                             intent.putExtra("email", result.getKakaoAccount().getEmail());
                             intent.putExtra("gender", result.getKakaoAccount().getGender());
+
                             startActivity(intent);
                        // }
                     }

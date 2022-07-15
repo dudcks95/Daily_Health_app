@@ -2,6 +2,7 @@ package com.example.dailyhealth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +60,7 @@ public class MainActivity_register extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Log.d("btn register>>>>", "click");
                 User user = new User(
                         e_name.getText().toString(),
                         e_email.getText().toString(),
@@ -70,17 +71,21 @@ public class MainActivity_register extends AppCompatActivity {
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
+                        Log.d("registert>>>>", "call enqueue");
                         Intent intent1 = new Intent(MainActivity_register.this, MainActivity.class);
                         intent1.putExtra("name",strName);
                         intent1.putExtra("height",Integer.parseInt(e_height.getText().toString()));
                         intent1.putExtra("weight",Integer.parseInt(e_weight.getText().toString()));
+                        Log.d(">>>>", "before startactivity");
+
                         startActivity(intent1);
+                        Log.d("registert>>>>", "call enqueue");
                         Toast.makeText(MainActivity_register.this, "회원등록완료", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-
+                        Log.d("fail>>>>", "call enqueue");
                     }
                 });
             }
