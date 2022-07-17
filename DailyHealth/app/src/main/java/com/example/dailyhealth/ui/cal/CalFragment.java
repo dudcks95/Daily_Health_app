@@ -54,11 +54,17 @@ public class CalFragment extends Fragment {
     //현재 날짜
     GregorianCalendar cal = new GregorianCalendar();
 
+    GregorianCalendar calendar = new GregorianCalendar(
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            1, 0, 0, 0
+    );
+
     ActivityResultLauncher<Intent> launcher;
 
 //    List<FoodsRecord> kcalList = new ArrayList<>();
 //    FoodsRecord[] kcalList = new FoodsRecord[31];
-Map<String, Long> kcalList = new HashMap<>();
+    Map<String, Long> kcalList = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +81,7 @@ Map<String, Long> kcalList = new HashMap<>();
 
 
         foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
-     /*   launcher= registerForActivityResult(
+        launcher= registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -84,16 +90,18 @@ Map<String, Long> kcalList = new HashMap<>();
                             Log.d("getdata>>",data+"");
 
                         }
-                });*/
+                });
 
         for(int i=0; i<StorageCalendar.length; i++){
             int pos = i;
             StorageCalendar[i]=new TextView(view.getContext());
         }
 
+
         //현재 날짜
 //        cal = new GregorianCalendar();
-        CalendarSetting(cal);
+
+        CalendarSetting(calendar);
 
         RecyclerViewCreate();
 
@@ -106,26 +114,24 @@ Map<String, Long> kcalList = new HashMap<>();
 
             switch (view.getId()){
                 case R.id.prevBtn:
-                    cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)-1, 1);
-                    Log.d("--------년도>>>>",cal.get(Calendar.YEAR)+"");
-                    Log.d("월>>>>",cal.get(Calendar.MONTH)+1 +"");
-                    Log.d("일자 사이즈>>", (dayNum.size()+1) +"");
-
+                    calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)-1, 1);
+                    Log.d("--------년도>>>>",calendar.get(Calendar.YEAR)+"");
+                    Log.d("월>>>>",calendar.get(Calendar.MONTH)+1 +"");
                     break;
                 case R.id.nextBtn:
-                    cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1,1);
-                    Log.d("------------년도>>>>",cal.get(Calendar.YEAR)+"");
-                    Log.d("월>>>>",cal.get(Calendar.MONTH)+1 +"");
-                    Log.d("일자 사이즈>>", (dayNum.size()+1)+ "");
-
+                    calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1,1);
+                    Log.d("------------년도>>>>",calendar.get(Calendar.YEAR)+"");
+                    Log.d("월>>>>",calendar.get(Calendar.MONTH)+1 +"");
                     break;
             }
 
-            CalendarSetting(cal);
+            CalendarSetting(calendar);
 
-            timeTextView.setText(cal.get(Calendar.YEAR) + "년" + (cal.get(Calendar.MONTH)+1)+"월");
-            kcalList.clear();
-            kcalhap(1L, cal.get(Calendar.MONTH));
+            timeTextView.setText(calendar.get(Calendar.YEAR) + "년" + (calendar.get(Calendar.MONTH)+1)+"월");
+            Log.d(".get(MONTH)>>",calendar.get(Calendar.MONTH)+"");
+
+            kcalhap(1L, calendar.get(Calendar.MONTH));
+
 
 
         }
@@ -135,7 +141,7 @@ Map<String, Long> kcalList = new HashMap<>();
     public void RecyclerViewCreate(){
         //Recycler Calendar
         calendarView = view.findViewById(R.id.calendar);
-        calendarAdapter = new Calendar_Recycler_Adapter(view.getContext(),StorageCalendar,dayNum,launcher, cal);
+        calendarAdapter = new Calendar_Recycler_Adapter(view.getContext(),StorageCalendar,launcher, calendar);
 
         layoutManager = new GridLayoutManager(view.getContext(),7);
         calendarView.setLayoutManager(layoutManager);
@@ -146,11 +152,11 @@ Map<String, Long> kcalList = new HashMap<>();
     // 캘린더 날짜 데이터 세팅
     public void CalendarSetting(GregorianCalendar cal){
         // 현재 날짜의 1일
-        GregorianCalendar calendar = new GregorianCalendar(
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                1, 0, 0, 0
-        );
+//        GregorianCalendar calendar = new GregorianCalendar(
+//                cal.get(Calendar.YEAR),
+//                cal.get(Calendar.MONTH),
+//                1, 0, 0, 0
+//        );
 
 
         // 저번달의 첫번째 1일
@@ -162,12 +168,12 @@ Map<String, Long> kcalList = new HashMap<>();
 
         // 특정 월에 시작하는 요일-1 해서 빈칸 구하기
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1;
-        Log.d("dayOfWeek >>>>>",dayOfWeek+"");
+//        Log.d("dayOfWeek >>>>>",dayOfWeek+"");
 
         // 한달의 최대일 그 이후의 빈공간 만들기
         // 해당 월의 마지막 요일
         int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
-        Log.d("max >>>>>",max+"");
+//        Log.d("max >>>>>",max+"");
 
 
 
@@ -175,23 +181,18 @@ Map<String, Long> kcalList = new HashMap<>();
 
         for(int i = 0; i<StorageCalendar.length; i++){
             if(i < dayOfWeek) { // 저번달의 끝의 일수를 설정
-                //StorageCalendar[i] = Integer.toString(prevCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)- dayOfWeek + i +1);
-                //StorageCalendar[i] = "";
                 StorageCalendar[i].setText("");
                 StorageCalendar[i].setEnabled(false);
             } else if (i > (max + dayOfWeek)) { // 이번 달의 끝 이후의 일수를 설정
-//                StorageCalendar[i] = Integer.toString(i - (max+dayOfWeek));
-//                StorageCalendar[i].setText(Integer.toString(i - (max+dayOfWeek)));
                 StorageCalendar[i].setText("");
                 StorageCalendar[i].setEnabled(false);
             } else { // 이번달 일수
 //                StorageCalendar[i] = " " + (i - dayOfWeek+1) + " ";
                     StorageCalendar[i].setText((i - dayOfWeek+1) + " ");
-//                    StorageCalendar[i].append(kcalList.get(i).toString());
                     String s= String.valueOf((i - dayOfWeek+1));
 
                     if(kcalList.containsKey(s)) {
-                        Log.d("log>>>>", kcalList.get(s).toString());
+                        Log.d("log>>>>", kcalList.get(s).longValue()+"");
                         StorageCalendar[i].append(kcalList.get(s).toString());
                     }
             }
@@ -206,19 +207,15 @@ Map<String, Long> kcalList = new HashMap<>();
             public void onResponse(Call<List<FoodsRecord>> call, Response<List<FoodsRecord>> response) {
                 kcalList.clear();
                 List<FoodsRecord> result = response.body();
-//                for(FoodsRecord foodsRecord: result) {
                 for(int i=0; i<result.size(); i++) {
                     String day = result.get(i).getDay();
                     Log.d("day",day+"");
 
-
                     if(kcalList.get(day) != null){
                         kcalList.put(day, result.get(i).getKcal()+kcalList.get(day));
-
                     }else{
                         Log.d("kcal>>",result.get(i).getKcal()+"");
                         kcalList.put(day,result.get(i).getKcal());
-
                     }
                     Log.d("Map>>>",day+"/"+result.get(i).getKcal());
                 }

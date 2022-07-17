@@ -42,19 +42,16 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
 
     Context context; // MainActivity
     TextView[] data; // 일자
-    List<Integer> dayNum;
     GregorianCalendar cal; // 날짜
     ActivityResultLauncher<Intent> launcher;
     private FoodRecordService foodRecordService;
 
 
-    public Calendar_Recycler_Adapter(Context context, TextView[] data, List<Integer> dayNum, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
+    public Calendar_Recycler_Adapter(Context context, TextView[] data, ActivityResultLauncher<Intent> launcher, GregorianCalendar cal){
         super();
         this.context = context;
         this.data = data;
-        this.dayNum = dayNum;
         this.launcher = launcher;
-//        Log.d("launcher>>>>>" , ""+launcher);
         this.cal = cal;
     }
 
@@ -81,8 +78,6 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
                 intent.putExtra("month", cal.get(Calendar.MONTH)+1);
                 String st[] = data[position].getText().toString().split(" ");
                 intent.putExtra("day", st[0]);
-//                Log.d("day>>",)
-
 //                intent.putExtra("day", dayNum+"");
                 launcher.launch(intent);
                 holder.itemView.setBackgroundColor(Color.BLUE);

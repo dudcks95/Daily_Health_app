@@ -11,8 +11,8 @@ public class UserClient {
 
     public UserClient(){
         Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://192.168.219.103:8704/")
-                .baseUrl("http://10.100.102.18:8704/")
+                .baseUrl("http://192.168.219.103:8704/")
+//                .baseUrl("http://10.100.102.18:8704/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
