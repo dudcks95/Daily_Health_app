@@ -1,5 +1,10 @@
 package com.example.daily_health_server.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +18,25 @@ public class UserService {
 	
 	public User insert(User user) {
 		return userRepository.save(user);
+	}
+	
+	public User list(String email){
+		return userRepository.findByEmail(email);
+	}
+	
+	@Transactional
+	public User update(int userid, User user) {
+		User u = userRepository.findById(userid).get();
+		
+		u.setUsername(user.getUsername());
+		u.setHeight(user.getHeight());
+		u.setWeight(user.getWeight());
+		u.setGender(user.getGender());
+		return u;
+	}
+	
+	public void delete(int userid) {
+		userRepository.deleteById(userid);
 	}
 
 }
