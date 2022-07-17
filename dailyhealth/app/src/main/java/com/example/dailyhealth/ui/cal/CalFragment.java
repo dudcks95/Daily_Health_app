@@ -124,6 +124,7 @@ Map<String, Long> kcalList = new HashMap<>();
             CalendarSetting(cal);
 
             timeTextView.setText(cal.get(Calendar.YEAR) + "년" + (cal.get(Calendar.MONTH)+1)+"월");
+            Log.d("timeTextView>>", cal.get(Calendar.YEAR) + "년" + (cal.get(Calendar.MONTH)+1)+"월");
             kcalList.clear();
             kcalhap(1L, cal.get(Calendar.MONTH));
 
@@ -146,11 +147,11 @@ Map<String, Long> kcalList = new HashMap<>();
     // 캘린더 날짜 데이터 세팅
     public void CalendarSetting(GregorianCalendar cal){
         // 현재 날짜의 1일
-        GregorianCalendar calendar = new GregorianCalendar(
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                1, 0, 0, 0
-        );
+//        GregorianCalendar calendar = new GregorianCalendar(
+//                cal.get(Calendar.YEAR),
+//                cal.get(Calendar.MONTH),
+//                1, 0, 0, 0
+//        );
 
 
         // 저번달의 첫번째 1일
@@ -161,12 +162,12 @@ Map<String, Long> kcalList = new HashMap<>();
 //        );
 
         // 특정 월에 시작하는 요일-1 해서 빈칸 구하기
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1;
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)-1;
         Log.d("dayOfWeek >>>>>",dayOfWeek+"");
 
         // 한달의 최대일 그 이후의 빈공간 만들기
         // 해당 월의 마지막 요일
-        int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
+        int max = cal.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
         Log.d("max >>>>>",max+"");
 
 
@@ -175,23 +176,16 @@ Map<String, Long> kcalList = new HashMap<>();
 
         for(int i = 0; i<StorageCalendar.length; i++){
             if(i < dayOfWeek) { // 저번달의 끝의 일수를 설정
-                //StorageCalendar[i] = Integer.toString(prevCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)- dayOfWeek + i +1);
-                //StorageCalendar[i] = "";
                 StorageCalendar[i].setText("");
                 StorageCalendar[i].setEnabled(false);
             } else if (i > (max + dayOfWeek)) { // 이번 달의 끝 이후의 일수를 설정
-//                StorageCalendar[i] = Integer.toString(i - (max+dayOfWeek));
-//                StorageCalendar[i].setText(Integer.toString(i - (max+dayOfWeek)));
                 StorageCalendar[i].setText("");
                 StorageCalendar[i].setEnabled(false);
             } else { // 이번달 일수
-//                StorageCalendar[i] = " " + (i - dayOfWeek+1) + " ";
                     StorageCalendar[i].setText((i - dayOfWeek+1) + " ");
-//                    StorageCalendar[i].append(kcalList.get(i).toString());
                     String s= String.valueOf((i - dayOfWeek+1));
 
                     if(kcalList.containsKey(s)) {
-                        Log.d("log>>>>", kcalList.get(s).toString());
                         StorageCalendar[i].append(kcalList.get(s).toString());
                     }
             }
@@ -209,18 +203,18 @@ Map<String, Long> kcalList = new HashMap<>();
 //                for(FoodsRecord foodsRecord: result) {
                 for(int i=0; i<result.size(); i++) {
                     String day = result.get(i).getDay();
-                    Log.d("day",day+"");
+                    Log.d("kahap) day",day+"");
 
 
                     if(kcalList.get(day) != null){
                         kcalList.put(day, result.get(i).getKcal()+kcalList.get(day));
 
                     }else{
-                        Log.d("kcal>>",result.get(i).getKcal()+"");
+                        Log.d("kahap) kcal>>",result.get(i).getKcal()+"");
                         kcalList.put(day,result.get(i).getKcal());
 
                     }
-                    Log.d("Map>>>",day+"/"+result.get(i).getKcal());
+                    Log.d("kahap) Map>>>",day+"/"+result.get(i).getKcal());
                 }
             }
 

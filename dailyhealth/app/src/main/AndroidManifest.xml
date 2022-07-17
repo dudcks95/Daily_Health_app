@@ -2,10 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dailyhealth">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- goolge maps config -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 외부 저장소 권한 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 사용자의 정확한 위치 정보 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /><!-- 사용자의 정확도 가 떨어지는 위치 정보 -->
+
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICE" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <permission
+        android:name="com.example.dailyhealth.permission.MAPS_RECEIVE"
+        android:label="signature" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -18,12 +32,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DailyHealth"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.cal.FoodSearch"
-            android:exported="false" />
-        <activity
-            android:name=".ui.cal.OneDay_Record"
-            android:exported="false" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" /> <!-- 위치 정보 받아오는 service 등록 -->
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="96b0705616358fb23fddf347aade35c2" />
+
         <activity
             android:name=".util.SplashActivity"
             android:exported="true"
@@ -60,12 +81,23 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="96b0705616358fb23fddf347aade35c2" />
+
+        <activity
+            android:name=".ui.cal.FoodSearch"
+            android:exported="false" />
+        <activity
+            android:name=".ui.cal.OneDay_Record"
+            android:exported="false" />
+
+<!--        <service-->
+<!--            android:name=".service.StepService"-->
+<!--            android:foregroundServiceType="location" />-->
+
         <service
-            android:name=".service.StepService"
-            android:foregroundServiceType="location" />
+            android:name=".service.TrackingService"
+            android:foregroundServiceType="location">
+            <!-- Any inner elements would go here. -->
+        </service>
 
     </application>
 

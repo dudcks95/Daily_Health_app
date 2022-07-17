@@ -85,7 +85,7 @@ public class MainActivity_register extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Log.d("fail>>>>", "call enqueue");
+                        Log.d("fail>>>>", ""+ t.getLocalizedMessage() + "//" + t.getMessage());
                     }
                 });
             }
