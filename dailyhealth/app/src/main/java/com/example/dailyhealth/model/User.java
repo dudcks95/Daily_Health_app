@@ -16,6 +16,13 @@ public class User {
         this.gender = gender;
     }
 
+    public User(String username, int height, int weight, String gender) {
+        this.username = username;
+        this.height = height;
+        this.weight = weight;
+        this.gender = gender;
+    }
+
     public int getUserid() {
         return userid;
     }

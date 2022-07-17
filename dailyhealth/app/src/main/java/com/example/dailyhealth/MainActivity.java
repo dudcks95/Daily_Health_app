@@ -8,9 +8,19 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.example.dailyhealth.databinding.ActivityMainBinding;
+import com.example.dailyhealth.model.User;
+import com.example.dailyhealth.service.UserService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /*

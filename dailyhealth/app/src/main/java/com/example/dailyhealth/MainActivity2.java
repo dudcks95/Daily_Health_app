@@ -1,6 +1,10 @@
 package com.example.dailyhealth;
 
+import static com.example.dailyhealth.util.Constants.PREFERENCE_FILE_KEY;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -12,6 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dailyhealth.model.User;
+import com.example.dailyhealth.service.UserService;
+import com.example.dailyhealth.ui.user.UserClient;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -21,9 +28,18 @@ import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity2 extends AppCompatActivity {
     private ISessionCallback mSessionCallback;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+    UserService userService = UserClient.getInstance().getUserService();
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +47,10 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         getAppKeyHash();
+
+        Context context = getApplicationContext();
+        sharedPref = context.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
 
         mSessionCallback = new ISessionCallback() {
             @Override
@@ -51,18 +71,65 @@ public class MainActivity2 extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(MeV2Response result) {
-                       /* if(result.getKakaoAccount().getEmail() != null) {
-                           Intent intent2 = new Intent(MainActivity2.this, MainActivity.class);
-                           startActivity(intent2);
-                        }else{*/
-                            //로그인 성공
-                            Intent intent = new Intent(MainActivity2.this, MainActivity_register.class);
-                            Log.d("testtest>>>>", "invoke: id333333=" + result.getKakaoAccount().getGender());
-                            intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
-                            intent.putExtra("email", result.getKakaoAccount().getEmail());
-                            intent.putExtra("gender", result.getKakaoAccount().getGender());
-                            startActivity(intent);
-                       // }
+                        Call<User> call = userService.list(result.getKakaoAccount().getEmail());
+                        call.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                if( response.body().getEmail().equals(result.getKakaoAccount().getEmail())) {
+                                    Intent intent2 = new Intent(MainActivity2.this, MainActivity.class);
+                                    editor.putString("name", result.getKakaoAccount().getProfile().getNickname());
+                                    editor.putString("email",result.getKakaoAccount().getEmail());
+                                    editor.apply();
+                                    startActivity(intent2);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Log.d(">>>>>>>>FFF",t.getMessage() +"//"+ t.getMessage());
+                                //로그인 성공
+                                Intent intent = new Intent(MainActivity2.this, MainActivity_register.class);
+                                Log.d("testtest>>>>", "invoke: id333333=" + result.getKakaoAccount().getGender());
+                                intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
+                                intent.putExtra("email", result.getKakaoAccount().getEmail());
+                                intent.putExtra("gender", result.getKakaoAccount().getGender());
+
+                                editor.putString("name", result.getKakaoAccount().getProfile().getNickname());
+                                editor.putString("email",result.getKakaoAccount().getEmail());
+                                editor.apply();
+                                startActivity(intent);
+                            }
+                        });
+
+//                        Call<List<User>> call = userService.list(result.getKakaoAccount().getEmail());
+//                        call.enqueue(new Callback<List<User>>() {
+//                            @Override
+//                            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+//                                if(response.body().get(user.getUserid()).getEmail()) {
+//                                    Intent intent2 = new Intent(MainActivity2.this, MainActivity.class);
+//                                    editor.putString("name", result.getKakaoAccount().getProfile().getNickname());
+//                                    editor.putString("email",result.getKakaoAccount().getEmail());
+//                                    editor.apply();
+//                                    startActivity(intent2);
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<List<User>> call, Throwable t) {
+//                                //로그인 성공
+//                                Intent intent = new Intent(MainActivity2.this, MainActivity_register.class);
+//                                Log.d("testtest>>>>", "invoke: id333333=" + result.getKakaoAccount().getGender());
+//                                intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
+//                                intent.putExtra("email", result.getKakaoAccount().getEmail());
+//                                intent.putExtra("gender", result.getKakaoAccount().getGender());
+//
+//                                editor.putString("name", result.getKakaoAccount().getProfile().getNickname());
+//                                editor.putString("email",result.getKakaoAccount().getEmail());
+//                                editor.apply();
+//                                startActivity(intent);
+//                            }
+//                        });
+
                     }
                 });
             }
