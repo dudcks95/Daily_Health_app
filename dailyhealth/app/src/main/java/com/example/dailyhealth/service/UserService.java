@@ -24,10 +24,10 @@ public interface UserService {
     Call<User> list(@Path("email") String email);
 
     //수정
-    @PUT("update/{userid}")
-    Call<User> update(@Path("userid") int userid, @Body User user);
+    @PUT("update/{email}")
+    Call<User> update(@Path("email") String email, @Body User user);
 
     //삭제
-    @DELETE("delete/{userid}")
-    Call<Void> delete(@Path("userid") int userid);
+    @DELETE("delete/{email}")
+    Call<Void> delete(@Path("email") String email);
 }

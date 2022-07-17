@@ -5,6 +5,7 @@ import static com.example.dailyhealth.util.Constants.PREFERENCE_FILE_KEY;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.dailyhealth.MainActivity;
+import com.example.dailyhealth.MainActivity_register;
 import com.example.dailyhealth.R;
 import com.example.dailyhealth.model.User;
 import com.example.dailyhealth.service.UserService;
@@ -115,15 +118,18 @@ public class UserFragment extends Fragment {
                                 Integer.parseInt(eHeight.getText().toString()),
                                 Integer.parseInt(eWeight.getText().toString()),
                                 eGender.getText().toString());
-                        Call<User> call = userService.update(user1.getUserid(), userdto);
+
+                        eName.setText(user1.getUsername());
+                        eHeight.setText(user1.getHeight());
+                        eWeight.setText(user1.getWeight());
+                        eGender.setText(user1.getGender());
+
+                        Call<User> call = userService.update(email, userdto);
                         call.enqueue(new Callback<User>() {
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {
-                                eName.setText(response.body().getUsername());
-                                eHeight.setText(response.body().getHeight());
-                                eWeight.setText(response.body().getWeight());
-                                eGender.setText(response.body().getGender());
-                                updateItem(response.body(), user1.getUserid());
+
+                                notifyAll();
                             }
 
                             @Override
@@ -133,14 +139,19 @@ public class UserFragment extends Fragment {
                         });
                     }
                 });
-                dlg.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
+                dlg.setNegativeButton("탈퇴", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Call<Void> call = userService.delete(user1.getUserid());
+                        Call<Void> call = userService.delete(email);
                         call.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                removeItem(user1.getUserid());
+                                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                                    @Override
+                                    public void onCompleteLogout() {
+                                        Navigation.findNavController(getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.mainActivity2);
+                                    }
+                                });
                             }
 
                             @Override
@@ -172,14 +183,5 @@ public class UserFragment extends Fragment {
         return view;
     }
 
-    //수정
-    public void updateItem(User user, int position){
-
-    }
-
-    //삭제
-    public void removeItem(int position){
-
-    }
 
 }

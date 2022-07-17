@@ -24,7 +24,7 @@ public class FoodsRecordController {
 		food.setFoodId(anfood.getFoodId());
 		
 		User user = new User();
-		user.setUserid(Long.valueOf(anfood.getUserid()));
+		user.setUserid(Long.valueOf(anfood.getUserid()).intValue());
 		foodRecord.setFood(food);
 		foodRecord.setMonth(anfood.getMonth());
 		foodRecord.setDay(anfood.getDay());
