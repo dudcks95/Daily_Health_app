@@ -5,6 +5,7 @@ import static com.example.dailyhealth.util.Constants.PREFERENCE_FILE_KEY;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,11 +20,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.dailyhealth.MainActivity;
+import com.example.dailyhealth.MainActivity_register;
 import com.example.dailyhealth.R;
 import com.example.dailyhealth.model.User;
 import com.example.dailyhealth.service.UserService;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +52,7 @@ public class UserFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btnLogout);
         btnUpdate = view.findViewById(R.id.btnUpdate);
 
-    SharedPreferences sharedPref = this.getActivity().getSharedPreferences(PREFERENCE_FILE_KEY,Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getActivity().getSharedPreferences(PREFERENCE_FILE_KEY,Context.MODE_PRIVATE);
         String email = sharedPref.getString("email",null);
 
           /*  String name = sharedPref.getString("name",null);
@@ -74,20 +79,6 @@ public class UserFragment extends Fragment {
             }
         });
 
-//        Call<List<User>> call = userService.list(email);
-//        call.enqueue(new Callback<List<User>>() {
-//            @Override
-//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-//                kName.setText(response.body().get(getId()).getUsername());
-//                kHeight.setText(response.body().get(getId()).getHeight());
-//                kWeight.setText(response.body().get(getId()).getWeight());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<User>> call, Throwable t) {
-//
-//            }
-//        });
 
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -114,16 +105,15 @@ public class UserFragment extends Fragment {
                                 Integer.parseInt(eWeight.getText().toString()),
                                 eGender.getText().toString());
 
-                        eName.setText(user1.getUsername());
-                        eHeight.setText(user1.getHeight());
-                        eWeight.setText(user1.getWeight());
-                        eGender.setText(user1.getGender());
 
                         Call<User> call = userService.update(email, userdto);
                         call.enqueue(new Callback<User>() {
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {
-
+                                eName.setText("송현진");
+                                eHeight.setText(user1.getHeight());
+                                eWeight.setText(user1.getWeight());
+                                eGender.setText(user1.getGender());
                                 notifyAll();
                             }
 
@@ -144,7 +134,7 @@ public class UserFragment extends Fragment {
                                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                                     @Override
                                     public void onCompleteLogout() {
-                                        Navigation.findNavController(getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.mainActivity2);
+//                                        Navigation.findNavController(getActivity(),R.id.nav_host_fragment_activity_main).navigate(R.id.mainActivity2);
                                     }
                                 });
                             }
