@@ -150,10 +150,10 @@ public class MapsFragment extends Fragment {
 				endRunAndSaveToDb();
 			}
 		});
-
-		TrackingService.trackingLocation.observe(getViewLifecycleOwner(), trackingLocation ->
-				gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trackingLocation.getLatitude(), trackingLocation.getLongitude()), MAP_ZOOM))
-		);
+//
+//		TrackingService.trackingLocation.observe(getViewLifecycleOwner(), trackingLocation ->
+//				gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(trackingLocation.getLatitude(), trackingLocation.getLongitude()), MAP_ZOOM))
+//		);
 
 		TrackingService.timeRunInMillis.observe(getViewLifecycleOwner(), timeRunInMillis->{
 			timeTosave = timeRunInMillis;

@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dailyhealth.R;
+import com.example.dailyhealth.model.Foods;
 import com.example.dailyhealth.model.FoodsRecord;
 import com.example.dailyhealth.service.FoodRecordService;
 
@@ -70,21 +71,24 @@ public class OneDay_Record extends AppCompatActivity {
 
 
 
-        launcher= registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult data) {
-                        if(data.getResultCode() == Activity.RESULT_OK){
-                            Intent intent = data.getData();
-                            //int result = intent.getIntExtra("result",0);
-                            //FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("result");
-                        }
-                    }
-                });
+//        launcher= registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    @Override
+//                    public void onActivityResult(ActivityResult data) {
+//                        if(data.getResultCode() == Activity.RESULT_OK){
+//                            Intent intent = data.getData();
+//                            //int result = intent.getIntExtra("result",0);
+//                            //FoodsRecord result = (FoodsRecord) intent.getSerializableExtra("result");
+//
+//
+//
+//                        }
+//                    }
+//                });
 
         foodRecordService = FoodClient.getClient().create(FoodRecordService.class);
-        Call<List<FoodsRecord>> callmorning = foodRecordService.selectfoodsRecord(1L, monththis, daythis);
+        Call<List<FoodsRecord>> callmorning = foodRecordService.selectfoodsRecord(1L, month, day);
         callmorning.enqueue(new Callback<List<FoodsRecord>>() {
             @Override
             public void onResponse(Call<List<FoodsRecord>> call, Response<List<FoodsRecord>> response) {
@@ -93,14 +97,42 @@ public class OneDay_Record extends AppCompatActivity {
 
                 if(foodsList != null && foodsList.size() > 0){
                     Log.d("sizemorning>>",foodsList.size()+"");
-                    Log.d("foodsList>>>",foodsList.get(1).getFoodName());
-                    Log.d("eatTIme>>",foodsList.get(1).getEatTime()+"");
-                    txMorningMenu.setText(foodsList.get(0).getFoodName());
-                    txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
-                    txLunchMenu.setText(foodsList.get(1).getFoodName());
-                    txLunchKcal.setText(foodsList.get(1).getKcal().toString().trim());
-                    txDinnerMenu.setText(foodsList.get(2).getFoodName());
-                    txDinnerKcal.setText(foodsList.get(2).getKcal().toString().trim());
+//                    Log.d("foodsList>>>",foodsList.get(1).getFoodName());
+//                    Log.d("eatTIme>>",foodsList.get(1).getEatTime()+"");
+//                    Log.d("foodsList222>>>",foodsList.get(2).getFoodName());
+                    if (foodsList.size()==3){ // 음식이 아침, 점심, 저녁 다 추가되어있다면
+                        txMorningMenu.setText(foodsList.get(0).getFoodName());
+                        txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                        txLunchMenu.setText(foodsList.get(1).getFoodName());
+                        txLunchKcal.setText(foodsList.get(1).getKcal().toString().trim());
+                        txDinnerMenu.setText(foodsList.get(2).getFoodName());
+                        txDinnerKcal.setText(foodsList.get(2).getKcal().toString().trim());
+                    } else if(foodsList.size() == 2 && foodsList.get(1).getEatTime()==2){ // 아침, 점심만 입력
+                        txMorningMenu.setText(foodsList.get(0).getFoodName());
+                        txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                        txLunchMenu.setText(foodsList.get(1).getFoodName());
+                        txLunchKcal.setText(foodsList.get(1).getKcal().toString().trim());
+                    } else if(foodsList.size() == 2 && foodsList.get(0).getEatTime()==1 && foodsList.get(1).getEatTime()==3){ // 아침, 저녁만 입력
+                        txMorningMenu.setText(foodsList.get(0).getFoodName());
+                        txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                        txDinnerMenu.setText(foodsList.get(1).getFoodName());
+                        txDinnerKcal.setText(foodsList.get(1).getKcal().toString().trim());
+                    } else if(foodsList.size() == 2 && foodsList.get(0).getEatTime()==2 && foodsList.get(1).getEatTime()==3){ // 점심, 저녁만 입력
+                        txLunchMenu.setText(foodsList.get(0).getFoodName());
+                        txLunchKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                        txDinnerMenu.setText(foodsList.get(1).getFoodName());
+                        txDinnerKcal.setText(foodsList.get(1).getKcal().toString().trim());
+                    } else if(foodsList.size() == 1 && foodsList.get(0).getEatTime()==1){ // 아침만 입력
+                        txMorningMenu.setText(foodsList.get(0).getFoodName());
+                        txMorningKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                    } else if(foodsList.size() == 1 && foodsList.get(0).getEatTime()==2){ // 점심만 입력
+                        txLunchMenu.setText(foodsList.get(0).getFoodName());
+                        txLunchKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                    } else if(foodsList.size() == 1 && foodsList.get(0).getEatTime()==3){ // 저녁만 입력
+                        txDinnerMenu.setText(foodsList.get(0).getFoodName());
+                        txDinnerKcal.setText(foodsList.get(0).getKcal().toString().trim());
+                    }
+
 //                    sum += Long.parseLong(txMorningKcal.getText().toString());
 //                    Intent intent = new Intent();
 //                    intent.putExtra("sum", sum);
@@ -168,11 +200,6 @@ public class OneDay_Record extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(OneDay_Record.this, CalFragment.class);
-//                intent.putExtra("sum", sum);
-//                Log.d("sum>>", sum+"");
-//                startActivity(intent);
-
                 finish();
             }
         });
@@ -184,7 +211,6 @@ public class OneDay_Record extends AppCompatActivity {
                 intent1.putExtra("month", month);
                 intent1.putExtra("day", day);
                 startActivity(intent1);
-//                launcher.launch(intent1);
             }
         });
 

@@ -11,9 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dailyhealth.ui.user.UserClient;
 import com.example.dailyhealth.model.User;
 import com.example.dailyhealth.service.UserService;
+import com.example.dailyhealth.ui.user.UserClient;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 

@@ -8,10 +8,12 @@ public class FoodClient {
 
     static  Retrofit getClient(){
         retrofit = new Retrofit.Builder()
-//                .baseUrl("http://192.168.219.103:8704/") // 집 IP
-                .baseUrl("http://10.100.102.30:8704/")  // 학원 IP
+                .baseUrl("http://192.168.0.2:8704/")  // 학원 IP
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+//                .baseUrl("http://192.168.219.103:8704/") // 집 IP
+//                .baseUrl("http://10.100.102.18:8704/")  // 학원 IP
+
         return retrofit;
     }
 }
