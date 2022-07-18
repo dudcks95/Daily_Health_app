@@ -30,14 +30,14 @@ public class UserController {
 		return userService.list(email);
 	}
 	
-	@PutMapping("/update/{userid}")
-	public User update(@PathVariable int userid, @RequestBody User user) {
-		return userService.update(userid, user);
+	@PutMapping("/update/{email}")
+	public User update(@PathVariable String email, @RequestBody User user) {
+		return userService.update(email, user);
 	}
 	
-	@DeleteMapping("/delete/{userid}")
-	public void delete(@PathVariable int userid) {
-		userService.delete(userid);
+	@DeleteMapping("/delete/{email}")
+	public void delete(@PathVariable String email) {
+		userService.delete(email);
 	}
 
 }

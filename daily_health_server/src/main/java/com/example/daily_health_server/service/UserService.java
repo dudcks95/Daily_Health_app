@@ -25,8 +25,8 @@ public class UserService {
 	}
 	
 	@Transactional
-	public User update(int userid, User user) {
-		User u = userRepository.findById(userid).get();
+	public User update(String email, User user) {
+		User u = userRepository.findByEmail(email);
 		
 		u.setUsername(user.getUsername());
 		u.setHeight(user.getHeight());
@@ -35,8 +35,8 @@ public class UserService {
 		return u;
 	}
 	
-	public void delete(int userid) {
-		userRepository.deleteById(userid);
+	public void delete(String email) {
+		userRepository.deleteByEmail(email);
 	}
 
 }
