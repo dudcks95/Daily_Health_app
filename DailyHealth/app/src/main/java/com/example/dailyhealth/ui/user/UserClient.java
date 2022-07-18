@@ -11,7 +11,7 @@ public class UserClient {
 
     public UserClient(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.30.1.23:8704/")
+                .baseUrl("http://10.100.102.30:8704/")  // 학원 IP
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

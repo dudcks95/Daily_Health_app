@@ -5,7 +5,6 @@ import static com.example.dailyhealth.util.Constants.PREFERENCE_FILE_KEY;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -20,15 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.dailyhealth.MainActivity;
-import com.example.dailyhealth.MainActivity_register;
 import com.example.dailyhealth.R;
 import com.example.dailyhealth.model.User;
 import com.example.dailyhealth.service.UserService;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
